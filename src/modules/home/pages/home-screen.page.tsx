@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHomeScreen } from '../hooks';
-import { SearchBar, BannerComponent, OfferComponent, CategoriesListComponent, HeaderComponent, ProductDetailsSheet, StickyCategoriesNav } from '../components';
+import { SearchBar, BannerComponent, OfferComponent, CategoriesListComponent, HeaderComponent, ProductDetailsSheet, StickyCategoriesNav, FooterBottomSheet } from '../components';
 import { OfferDetailsSheet, useOfferDetailsSheet } from '../../offer';
 import { useProductDetailsSheet } from '../hooks';
 import type { Banner, Offer, Product, Category } from '../../../shared/types';
@@ -94,6 +94,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
   };
 
   const handleFollowUsClick = () => {
+    setIsFooterSheetOpen(true);
   };
 
   const handleProfileClick = () => {
@@ -140,6 +141,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
   const [isOrdersSheetOpen, setIsOrdersSheetOpen] = React.useState(false);
   const [isOrderDetailsSheetOpen, setIsOrderDetailsSheetOpen] = React.useState(false);
   const [isAssessmentSheetOpen, setIsAssessmentSheetOpen] = React.useState(false);
+  const [isFooterSheetOpen, setIsFooterSheetOpen] = React.useState(false);
   const [selectedOrderId, setSelectedOrderId] = React.useState<string | null>(null);
   const closeProfileSheet = () => setIsProfileSheetOpen(false);
   const closeOrdersSheet = () => setIsOrdersSheetOpen(false);
@@ -151,6 +153,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
     setIsAssessmentSheetOpen(false);
     setSelectedOrderId(null);
   };
+  const closeFooterSheet = () => setIsFooterSheetOpen(false);
 
   const handleSearchClick = () => {
     setIsSearchBarVisible(true);
@@ -405,6 +408,12 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
           orderId={selectedOrderId}
           onAssessmentSubmitted={handleAssessmentSubmitted}
           onShowOrders={handleShowOrders}
+        />
+
+        {/* Footer Bottom Sheet */}
+        <FooterBottomSheet
+          isOpen={isFooterSheetOpen}
+          onClose={closeFooterSheet}
         />
 
         {/* Extra space to ensure scrolling */}

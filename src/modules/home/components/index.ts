@@ -1,6 +1,7 @@
 export * from './banner.component';
 export * from './categories-list.component';
 export * from './featured-products.component';
+export * from './footer-bottom-sheet.component';
 export * from './header.component';
 export * from './home-screen.component';
 export * from './offer.component';
