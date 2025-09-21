@@ -18,11 +18,9 @@ export interface CheckoutService {
 
 // Mock implementation - replace with real API calls
 export class MockCheckoutService implements CheckoutService {
-    async placeOrder(order: OrderRequest): Promise<OrderResponse> {
-        // Simulate API call
+    async placeOrder(_order: OrderRequest): Promise<OrderResponse> {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Mock response
         return {
             orderId: `ORD-${Date.now()}`,
             status: 'pending',
@@ -31,21 +29,20 @@ export class MockCheckoutService implements CheckoutService {
         };
     }
 
-    async getOrderStatus(orderId: string): Promise<OrderResponse> {
+    async getOrderStatus(_orderId: string): Promise<OrderResponse> {
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        // Mock different statuses based on order ID
         const statuses: OrderResponse['status'][] = ['pending', 'confirmed', 'preparing', 'ready'];
         const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
         return {
-            orderId,
+            orderId: _orderId,
             status: randomStatus,
             estimatedTime: randomStatus === 'ready' ? 0 : 10,
         };
     }
 
-    async cancelOrder(orderId: string): Promise<boolean> {
+    async cancelOrder(_orderId: string): Promise<boolean> {
         await new Promise(resolve => setTimeout(resolve, 500));
         return true;
     }
@@ -62,17 +59,17 @@ export class MockCheckoutService implements CheckoutService {
         ];
     }
 
-    async reserveTable(tableId: string, duration: number): Promise<boolean> {
+    async reserveTable(_tableId: string, _duration: number): Promise<boolean> {
         await new Promise(resolve => setTimeout(resolve, 500));
         return true;
     }
 
-    async releaseTable(tableId: string): Promise<boolean> {
+    async releaseTable(_tableId: string): Promise<boolean> {
         await new Promise(resolve => setTimeout(resolve, 300));
         return true;
     }
 
-    async validateCoupon(code: string): Promise<Coupon | null> {
+    async validateCoupon(_code: string): Promise<Coupon | null> {
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const mockCoupons: Coupon[] = [
@@ -104,7 +101,7 @@ export class MockCheckoutService implements CheckoutService {
         ];
 
         return mockCoupons.find(coupon =>
-            coupon.code === code && coupon.isActive
+            coupon.code === _code && coupon.isActive
         ) || null;
     }
 
