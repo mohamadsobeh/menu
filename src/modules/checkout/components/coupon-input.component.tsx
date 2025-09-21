@@ -1,0 +1,101 @@
+import React, { useState } from 'react';
+import type { Coupon } from '../types';
+
+interface CouponInputProps {
+    value: string;
+    onChange: (value: string) => void;
+    onApplyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
+    onRemoveCoupon: () => void;
+    appliedCoupon?: Coupon;
+    isLoading: boolean;
+    error?: string;
+}
+
+export const CouponInput: React.FC<CouponInputProps> = ({
+    value,
+    onChange,
+    onApplyCoupon,
+    onRemoveCoupon,
+    appliedCoupon,
+    isLoading,
+    error,
+}) => {
+    const [localError, setLocalError] = useState<string>('');
+
+    const handleApply = async () => {
+        if (!value.trim()) return;
+
+        setLocalError('');
+        const result = await onApplyCoupon(value.trim());
+
+        if (!result.success) {
+            setLocalError(result.message);
+        }
+    };
+
+    const handleRemove = () => {
+        onRemoveCoupon();
+        setLocalError('');
+    };
+
+    const displayError = error || localError;
+
+    return (
+        <div className="bg-white border border-gray-200 rounded-lg p-3">
+            <div className="flex items-center gap-2">
+                <input
+                    type="text"
+                    placeholder="ادخل كود الحسم"
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    className="flex-1 text-sm arabic-text outline-none"
+                    disabled={isLoading || !!appliedCoupon}
+                />
+
+                {appliedCoupon ? (
+                    <button
+                        onClick={handleRemove}
+                        className="text-red-500 hover:text-red-700 p-1"
+                        disabled={isLoading}
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                ) : (
+                    <button
+                        onClick={handleApply}
+                        disabled={isLoading || !value.trim()}
+                        className="bg-[#50BF63] text-white px-3 py-1 rounded text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isLoading ? '...' : 'تطبيق'}
+                    </button>
+                )}
+            </div>
+
+            {appliedCoupon && (
+                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-sm">
+                    <div className="flex items-center gap-2 text-green-700">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="arabic-text">
+                            تم تطبيق كوبون {appliedCoupon.code} - خصم {appliedCoupon.discountType === 'percentage' ? `${appliedCoupon.discountValue}%` : `${appliedCoupon.discountValue} ل.س`}
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            {displayError && (
+                <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm">
+                    <div className="flex items-center gap-2 text-red-700">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="arabic-text">{displayError}</span>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
