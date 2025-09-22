@@ -6,6 +6,7 @@ import { CouponInput } from "./coupon-input.component";
 import { OrderSummaryComponent as OrderSummary } from "./order-summary.component";
 import { PlaceOrderButton } from "./place-order-button.component";
 import type { PhoneNumberForm } from "../../../shared/types";
+import { PaymentFooterBottomSheet } from "./payment-footer-bottom-sheet.component";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -34,6 +35,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isPaymentFooterOpen, setIsPaymentFooterOpen] = useState(false);
+  const [blockNextPlaceOrder, setBlockNextPlaceOrder] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -55,6 +58,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   };
 
   const handlePlaceOrder = async () => {
+    if (blockNextPlaceOrder) {
+      // Skip placing order once when phone modal triggers footer sheet
+      setBlockNextPlaceOrder(false);
+      return;
+    }
     try {
       const orderRequest = prepareOrderRequest();
       console.log("Placing order:", orderRequest);
@@ -71,14 +79,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handlePhoneSubmitted = (phoneData: PhoneNumberForm) => {
     console.log("Phone number submitted:", phoneData);
-    resetCheckout();
-    handleClose();
+    setIsPaymentFooterOpen(true);
+    setBlockNextPlaceOrder(true);
   };
 
   const handlePhoneSkip = () => {
     console.log("Phone collection skipped");
-    resetCheckout();
-    handleClose();
+    setIsPaymentFooterOpen(true);
+    setBlockNextPlaceOrder(true);
   };
 
   // تحديث الكمية (زيادة/نقصان)
@@ -248,10 +256,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           onPlaceOrder={handlePlaceOrder}
           onPhoneSubmitted={handlePhoneSubmitted}
           onPhoneSkipped={handlePhoneSkip}
+          onOpenPaymentFooter={() => setIsPaymentFooterOpen(true)}
           isLoading={checkoutState.isLoading}
           disabled={checkoutState.orderSummary.items.length === 0}
         />
       </div>
+
+      {/* Payment Footer Sheet (ongoing order details) */}
+      <PaymentFooterBottomSheet
+        isOpen={isPaymentFooterOpen}
+        onClose={() => setIsPaymentFooterOpen(false)}
+      />
     </div>
   );
 };

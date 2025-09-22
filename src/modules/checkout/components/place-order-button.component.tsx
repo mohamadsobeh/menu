@@ -6,6 +6,7 @@ interface PlaceOrderButtonProps {
   onPlaceOrder: () => void;
   onPhoneSubmitted?: (phoneData: PhoneNumberForm) => void;
   onPhoneSkipped?: () => void;
+  onOpenPaymentFooter?: () => void;
   isLoading: boolean;
   disabled: boolean;
 }
@@ -14,6 +15,7 @@ export const PlaceOrderButton: React.FC<PlaceOrderButtonProps> = ({
   onPlaceOrder,
   onPhoneSubmitted,
   onPhoneSkipped,
+  onOpenPaymentFooter,
   isLoading,
   disabled,
 }) => {
@@ -38,14 +40,14 @@ export const PlaceOrderButton: React.FC<PlaceOrderButtonProps> = ({
     console.log("Phone number submitted:", phoneData);
     onPhoneSubmitted?.(phoneData);
     setShowPhoneCollection(false);
-    onPlaceOrder();
+    onOpenPaymentFooter?.();
   };
 
   const handlePhoneSkipped = () => {
     console.log("Phone collection skipped");
     onPhoneSkipped?.();
     setShowPhoneCollection(false);
-    onPlaceOrder();
+    onOpenPaymentFooter?.();
   };
   return (
     <>

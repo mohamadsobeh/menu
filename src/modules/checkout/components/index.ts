@@ -8,3 +8,4 @@ export { OrderSummaryComponent } from './order-summary.component';
 export * from './place-order-button.component';
 export * from './phone-collection-modal.component';
 export * from './user-details-bottom-sheet.component';
+export * from './payment-footer-bottom-sheet.component';
