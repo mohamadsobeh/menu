@@ -88,10 +88,10 @@ export const AssessmentBottomSheet: React.FC<AssessmentBottomSheetProps> = ({
                     </h2>
                     <button
                         onClick={onClose}
-                        className="absolute left-4 p-2 text-[#303136]"
+                        className="absolute right-4 p-2 text-[#303136]"
                     >
                         <svg
-                            className="w-6 h-6 rotate-180"
+                            className="w-6 h-6 rotate-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
