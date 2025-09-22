@@ -12,7 +12,6 @@ interface PlaceOrderButtonProps {
 }
 
 export const PlaceOrderButton: React.FC<PlaceOrderButtonProps> = ({
-  onPlaceOrder,
   onPhoneSubmitted,
   onPhoneSkipped,
   onOpenPaymentFooter,
