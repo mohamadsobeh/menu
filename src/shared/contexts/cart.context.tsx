@@ -183,7 +183,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return state.items.reduce((total, item) => {
       const basePrice = item.price_in_syp * item.quantity;
       const additionsPrice = item.selectedAdditions
-        ? item.selectedAdditions.reduce((addTotal, addition) => addTotal + addition.price_in_syp, 0) * item.quantity
+        ? item.selectedAdditions.reduce((addTotal, addition) => addTotal + parseFloat(addition.priceSyp), 0) * item.quantity
         : 0;
       return total + basePrice + additionsPrice;
     }, 0);

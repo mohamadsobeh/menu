@@ -21,9 +21,7 @@ export const ProductsByCategoryPage: React.FC<ProductsByCategoryPageProps> = ({
         isLoading,
         isError,
         errorMessage,
-        currentPage,
-        pagination,
-        hasProducts,
+        // currentPage, pagination, hasProducts,
         goToPage,
     } = useProductsByCategory({
         categoryId,

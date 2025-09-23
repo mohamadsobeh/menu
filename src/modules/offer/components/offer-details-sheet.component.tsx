@@ -119,7 +119,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
 
     setTimeout(() => {
       addItem({
-        id: offer.id,
+        id: offer.id.toString(),
         name: offer.title || 'Offer',
         price_in_syp: offer.price_syp,
         price_in_usd: offer.price_usd,
