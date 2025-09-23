@@ -13,7 +13,7 @@ export interface Banner {
 
 // Offer type
 export interface Offer {
-  id: string;
+  id: number;
   user_id: string;
   title: string;
   description: string;
@@ -35,17 +35,6 @@ export interface ProductImage {
   image_url: string;
   created_at: string;
   image_path: string;
-}
-
-// Product addition type
-export interface ProductAddition {
-  id: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
-  is_available: boolean;
-  price_in_syp: number;
-  price_in_usd: number | null;
 }
 
 // Product Addition type

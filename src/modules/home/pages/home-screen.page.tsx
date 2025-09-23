@@ -29,8 +29,6 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
   const {
     computedData: recommendedOffersData,
     isLoading: isRecommendedOffersLoading,
-    isError: isRecommendedOffersError,
-    errorMessage: recommendedOffersErrorMessage,
   } = useRecommendedOffers({
     initialPage: 1,
     initialLimit: 10,
