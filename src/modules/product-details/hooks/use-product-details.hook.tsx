@@ -53,7 +53,7 @@ export const useProductDetails = ({
     }, []);
 
     // Open product details by ID (fetches from API)
-    const openProductDetailsById = useCallback((id: number, imageUrl?: string) => {
+    const openProductDetailsById = useCallback((_id: number, imageUrl?: string) => {
         setCategoryImageUrl(imageUrl || '');
         setIsOpen(true);
         // The API data will be used when available
