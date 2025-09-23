@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHomeScreen } from '../hooks';
-import { SearchBar, BannerComponent, OfferComponent, CategoriesListComponent, HeaderComponent, ProductDetailsSheet, StickyCategoriesNav, FooterBottomSheet } from '../components';
-import { OfferDetailsSheet, useOfferDetailsSheet } from '../../offer';
-import { useProductDetailsSheet } from '../hooks';
+import { SearchBar, BannerComponent, CategoriesListComponent, HeaderComponent, StickyCategoriesNav, FooterBottomSheet } from '../components';
+import { OfferDetailsSheet, useOfferDetailsSheet, RecommendedOffersComponent, useRecommendedOffers } from '../../offer';
+import { ProductDetailsSheet, useProductDetailsSheet } from '../../product-details';
 import type { Banner, Offer, Product, Category } from '../../../shared/types';
 import { ShimmerHomeScreen, FlyingAnimation, FloatingCartButton, Toast } from '../../../shared/components';
 import { ProfileBottomSheet } from '../../profile';
@@ -10,21 +10,31 @@ import { OrdersBottomSheet, OrderDetailsBottomSheet } from '../../orders';
 import { AssessmentBottomSheet } from '../../assessment';
 
 interface HomeScreenPageProps {
-  userId: string;
+  restaurantId: number;
 }
 
-export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
+export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) => {
   const {
     isLoading,
     isFetching,
     isError,
     errorMessage,
     activeBanners,
-    recommendedOffers,
     sortedCategories,
     whiteLabelConfig,
     refetch,
-  } = useHomeScreen(userId);
+  } = useHomeScreen(restaurantId);
+
+  // Use the new recommended offers endpoint
+  const {
+    computedData: recommendedOffersData,
+    isLoading: isRecommendedOffersLoading,
+    isError: isRecommendedOffersError,
+    errorMessage: recommendedOffersErrorMessage,
+  } = useRecommendedOffers({
+    initialPage: 1,
+    initialLimit: 10,
+  });
 
   // Get featured products for the selected offer
   const getFeaturedProductsForOffer = React.useCallback((offer: Offer | null) => {
@@ -74,19 +84,13 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
   };
 
   const handleProductClick = (product: Product, categoryImageUrl?: string) => {
-    // Prevent search from unfocusing when clicking on products
-    setShouldUnfocusSearch(false);
+    console.log("Clicked product:", product);
+    console.log("isAvailable value:", product?.isAvailable);
 
-    // Re-focus the search bar after a short delay to maintain focus
-    setTimeout(() => {
-      setShouldUnfocusSearch(false);
-    }, 50);
-
-    if (!product.is_available) {
-      showToast('هذا المنتج غير متوفر حالياً', 'warning');
-    } else {
-      // Open product details sheet
+    if (product?.isAvailable === true) {
       openProductDetails(product, categoryImageUrl);
+    } else {
+      showToast('هذا المنتج غير متوفر حالياً', 'warning');
     }
   };
 
@@ -319,11 +323,15 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
           />
         )}
 
-        {/* Offer Component */}
-        {recommendedOffers.length > 0 && !isSearchFocused && (
-          <OfferComponent
-            offers={recommendedOffers}
+        {/* Recommended Offers Component */}
+        {!isSearchFocused && (
+          <RecommendedOffersComponent
+            offers={recommendedOffersData?.recommendedOffers || []}
+            pagination={recommendedOffersData?.pagination || { page: 1, limit: 10, total: 0, totalPages: 0, hasNext: false, hasPrev: false }}
+            isLoading={isRecommendedOffersLoading}
             onOfferClick={handleOfferClick}
+            whiteLabelConfig={whiteLabelConfig}
+            showPagination={false}
           />
         )}
 
@@ -333,6 +341,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
             categories={isSearchFocused ? filteredCategories : sortedCategories}
             onProductClick={handleProductClick}
             onCategoryClick={handleCategoryClick}
+            whiteLabelConfig={whiteLabelConfig}
           />
         )}
 
@@ -352,7 +361,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
         <FlyingAnimation />
 
         {/* Floating Cart Button */}
-        <FloatingCartButton />
+        <FloatingCartButton whiteLabelConfig={whiteLabelConfig} />
 
         {/* Toast Notification */}
         <Toast
@@ -414,6 +423,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
         <FooterBottomSheet
           isOpen={isFooterSheetOpen}
           onClose={closeFooterSheet}
+          whiteLabelConfig={whiteLabelConfig}
         />
 
         {/* Extra space to ensure scrolling */}

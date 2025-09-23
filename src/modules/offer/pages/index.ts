@@ -1,1 +1,1 @@
-// Export all pages from this module
+export * from './offers.page';

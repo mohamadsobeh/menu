@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { useCart } from '../contexts';
 import { formatSYPPrice } from '../utils';
 import { CartModal } from './cart-modal.component';
+import type { WhiteLabelConfig } from '../types';
 
-export const FloatingCartButton: React.FC = () => {
+interface FloatingCartButtonProps {
+  whiteLabelConfig?: WhiteLabelConfig | null;
+}
+
+export const FloatingCartButton: React.FC<FloatingCartButtonProps> = ({ whiteLabelConfig }) => {
   const { getTotalPrice, getItemCount } = useCart();
   const totalPrice = getTotalPrice();
   const itemCount = getItemCount();
@@ -34,13 +39,23 @@ export const FloatingCartButton: React.FC = () => {
         <button
           ref={cartButtonRef}
           onClick={handleCartClick}
-          className="w-full bg-[#50BF63] text-white py-3 px-8 rounded-full shadow-lg flex items-center justify-center gap-4 arabic-text font-semibold text-lg hover:bg-[#45a556] transition-colors duration-200"
+          className="w-full text-white py-3 px-8 rounded-full shadow-lg flex items-center justify-center gap-4 arabic-text font-semibold text-lg transition-colors duration-200"
+          style={{
+            backgroundColor: whiteLabelConfig?.primaryColor || '#50BF63',
+            fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor || '#45a556';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
+          }}
         >
           <span>رؤية السلة</span>
           <span>{formatSYPPrice(totalPrice)}</span>
         </button>
       </div>
-      
+
       <CartModal
         isOpen={isCartModalOpen}
         onClose={() => setIsCartModalOpen(false)}
