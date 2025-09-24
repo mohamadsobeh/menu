@@ -17,9 +17,7 @@ export const OffersPage: React.FC<OffersPageProps> = ({
         isLoading,
         isError,
         errorMessage,
-        currentPage,
-        pagination,
-        hasOffers,
+        // currentPage, pagination, hasOffers,
         goToPage,
     } = useOffers({
         initialPage: 1,

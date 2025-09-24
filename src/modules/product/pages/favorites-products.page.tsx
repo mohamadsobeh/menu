@@ -17,9 +17,7 @@ export const FavoritesProductsPage: React.FC<FavoritesProductsPageProps> = ({
         isLoading,
         isError,
         errorMessage,
-        currentPage,
-        pagination,
-        hasProducts,
+        // currentPage, pagination, hasProducts,
         goToPage,
     } = useFavoritesProducts({
         initialPage: 1,

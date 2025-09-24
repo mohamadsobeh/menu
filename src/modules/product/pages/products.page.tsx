@@ -17,9 +17,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
         isLoading,
         isError,
         errorMessage,
-        currentPage,
-        pagination,
-        hasProducts,
+        // currentPage, pagination, hasProducts,
         goToPage,
     } = useProducts({
         initialPage: 1,

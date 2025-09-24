@@ -52,7 +52,7 @@ export const PaginatedOffersComponent: React.FC<PaginatedOffersComponentProps> =
 
         setTimeout(() => {
             addItem({
-                id: offer.id,
+                id: offer.id.toString(),
                 name: offer.title || 'Offer',
                 price_in_syp: offer.price_syp,
                 price_in_usd: offer.price_usd,
@@ -201,8 +201,8 @@ export const PaginatedOffersComponent: React.FC<PaginatedOffersComponentProps> =
                                     key={pageNum}
                                     onClick={() => handlePageChange(pageNum)}
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${pageNum === pagination.page
-                                            ? 'text-white'
-                                            : 'text-gray-700 hover:bg-gray-100'
+                                        ? 'text-white'
+                                        : 'text-gray-700 hover:bg-gray-100'
                                         }`}
                                     style={{
                                         backgroundColor: pageNum === pagination.page

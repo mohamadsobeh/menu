@@ -28,7 +28,7 @@ export const useProductsData = (params: ProductsParams) => {
         queryFn: () => fetchProductsData(params),
         enabled: !!params.page && !!params.limit,
         staleTime: 5 * 60 * 1000, // 5 minutes
-        gcTime: 10 * 60 * 1000, // 10 minutes
+        gcTime: 10 * 60 * 1000, // 10 minute
         retry: (failureCount, error) => {
             if (failureCount >= 3) return false;
             if (error instanceof Error && error.message.includes('4')) return false;
