@@ -1,1 +1,1 @@
-// Export all services from this module
+export * from './product-details.service';

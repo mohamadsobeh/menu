@@ -1,1 +1,2 @@
-// Export all services from this module
+export * from './offers.service';
+export * from './recommended-offers.service';

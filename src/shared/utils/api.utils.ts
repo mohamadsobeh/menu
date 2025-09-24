@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://vcbebxqmysjonlljaoff.supabase.co/functions/v1';
+// Development: use proxy (/api), Production: use full URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? '/api' : 'https://menu-backend-peqv.onrender.com');
 
 export interface ApiError extends Error {
   status?: number;
@@ -16,8 +18,12 @@ export const createApiError = (message: string, status?: number, data?: any): Ap
 export const apiClient = {
   async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
     try {
-      const url = new URL(`${API_BASE_URL}${endpoint}`);
-      
+      // Handle relative URLs for development proxy
+      const baseUrl = API_BASE_URL.startsWith('/') ? window.location.origin + API_BASE_URL : API_BASE_URL;
+      const fullUrl = `${baseUrl}${endpoint}`;
+      console.log('API Request:', fullUrl);
+      const url = new URL(fullUrl);
+
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
           url.searchParams.append(key, value);
@@ -52,7 +58,11 @@ export const apiClient = {
 
   async post<T>(endpoint: string, body?: any): Promise<T> {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      // Handle relative URLs for development proxy
+      const baseUrl = API_BASE_URL.startsWith('/') ? window.location.origin + API_BASE_URL : API_BASE_URL;
+      const fullUrl = `${baseUrl}${endpoint}`;
+      console.log('API Request:', fullUrl);
+      const response = await fetch(fullUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
