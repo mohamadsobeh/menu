@@ -1,1 +1,1 @@
-export * from './offers.page';
+// Export all pages from this module

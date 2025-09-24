@@ -5,5 +5,6 @@ export * from './footer-bottom-sheet.component';
 export * from './header.component';
 export * from './home-screen.component';
 export * from './offer.component';
+export * from './product-details-sheet.component';
 export * from './search-bar.component';
 export * from './sticky-categories-nav.component';

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { Product } from '../../../shared/types';
 import { useCart } from '../../../shared/contexts';
-import { formatSYPPrice } from '../../../shared/utils';
 
 interface ProductDetailsSheetProps {
   product: Product | null;
@@ -116,18 +115,18 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
 
     const animationId = `${product.id}-${Date.now()}`;
 
-    addFlyingAnimation(animationId, categoryImageUrl || product.images?.[0] || "/images/default-product.png", startX, startY, endX, endY);
+    addFlyingAnimation(animationId, categoryImageUrl || product.images?.[0]?.image_url || product.product_images?.[0]?.image_url || "/images/default-product.png", startX, startY, endX, endY);
 
     // Get selected additions
-    const selectedAdditionsList = product.additions?.filter(addition => selectedAdditions.has(addition.id.toString())) || [];
+    const selectedAdditionsList = product.additions?.filter(addition => selectedAdditions.has(addition.id)) || [];
 
     setTimeout(() => {
       addItem({
-        id: product.id.toString(),
+        id: product.id,
         name: product.name,
-        price_in_syp: parseFloat(product.priceSyp),
-        price_in_usd: product.priceUsd ? parseFloat(product.priceUsd) : 0,
-        image_url: categoryImageUrl || product.images?.[0] || "/images/default-product.png",
+        price_in_syp: product.price_in_syp,
+        price_in_usd: product.price_in_usd,
+        image_url: categoryImageUrl || product.images?.[0]?.image_url || product.product_images?.[0]?.image_url || "/images/default-product.png",
         type: 'product',
         quantity: quantity,
         selectedAdditions: selectedAdditionsList
@@ -186,7 +185,7 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
             {/* Image */}
             <div className="relative">
               <img
-                src={categoryImageUrl || product.images?.[0] || "/images/default-product.png"}
+                src={categoryImageUrl || product.images?.[0]?.image_url || product.product_images?.[0]?.image_url || "/images/default-product.png"}
                 alt={product.name}
                 className="w-full h-80 object-cover"
               />
@@ -219,16 +218,16 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                       <div className="space-y-4">
                         {/* Price Information */}
                         <div className="flex items-center gap-4">
-                          {product.priceUsd && parseFloat(product.priceUsd) > 0 && (
+                          {product.price_in_usd && product.price_in_usd > 0 && (
                             <div className="text-gray-600">
                               <span className="text-sm">السعر بالدولار:</span>
-                              <span className="text-lg font-bold ml-2">${product.priceUsd}</span>
+                              <span className="text-lg font-bold ml-2">${product.price_in_usd}</span>
                             </div>
                           )}
-                          {product.priceSyp && parseFloat(product.priceSyp) > 0 && (
+                          {product.price_in_syp && product.price_in_syp > 0 && (
                             <div className="text-gray-600">
                               <span className="text-sm">السعر بالليرة:</span>
-                              <span className="text-lg font-bold ml-2 text-[#50BF63]">{formatSYPPrice(parseFloat(product.priceSyp))}</span>
+                              <span className="text-lg font-bold ml-2 text-[#50BF63]">{product.price_in_syp} ل.س</span>
                             </div>
                           )}
                         </div>
@@ -236,61 +235,22 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                         {/* Availability Status */}
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-gray-600">الحالة:</span>
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${product.isAvailable
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                            }`}>
-                            {product.isAvailable ? 'متوفر' : 'غير متوفر'}
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                            product.is_available 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-red-100 text-red-800'
+                          }`}>
+                            {product.is_available ? 'متوفر' : 'غير متوفر'}
                           </span>
                         </div>
 
                         {/* Favorite Status */}
-                        {product.isFav && (
+                        {product.isfav && (
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-gray-600">الحالة:</span>
                             <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#FFC120] text-black">
                               مفضلة
                             </span>
-                          </div>
-                        )}
-
-                        {/* Calories */}
-                        {product.calories && (
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-600">السعرات الحرارية:</span>
-                            <span className="text-sm font-bold text-red-600">
-                              {product.calories} سعرة حرارية
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Category and Restaurant */}
-                        <div className="flex items-center gap-4">
-                          {product.category?.name && (
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-600">الفئة:</span>
-                              <span className="text-sm font-bold text-gray-800">{product.category?.name}</span>
-                            </div>
-                          )}
-                          {product.restaurant?.name && (
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-600">المطعم:</span>
-                              <span className="text-sm font-bold text-gray-800">{product.restaurant?.name}</span>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Ingredients */}
-                        {product.ingredients && product.ingredients.length > 0 && (
-                          <div className="mt-4">
-                            <span className="text-sm text-gray-600 block mb-2">المكونات:</span>
-                            <div className="flex flex-wrap gap-2">
-                              {product.ingredients.map((ingredient, index) => (
-                                <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                                  {ingredient}
-                                </span>
-                              ))}
-                            </div>
                           </div>
                         )}
                       </div>
@@ -308,36 +268,39 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                                   onClick={() => {
                                     setSelectedAdditions(prev => {
                                       const newSet = new Set(prev);
-                                      if (newSet.has(addition.id.toString())) {
-                                        newSet.delete(addition.id.toString());
+                                      if (newSet.has(addition.id)) {
+                                        newSet.delete(addition.id);
                                       } else {
-                                        newSet.add(addition.id.toString());
+                                        newSet.add(addition.id);
                                       }
                                       return newSet;
                                     });
                                   }}
-                                  disabled={!addition.isAvailable}
-                                  className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-colors ${selectedAdditions.has(addition.id.toString())
-                                    ? 'bg-emerald-600 border-emerald-600'
-                                    : addition.isAvailable
+                                  disabled={!addition.is_available}
+                                  className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-colors ${
+                                    selectedAdditions.has(addition.id)
+                                      ? 'bg-emerald-600 border-emerald-600'
+                                      : addition.is_available
                                       ? 'border-gray-300'
                                       : 'border-gray-200 bg-gray-100'
-                                    }`}
+                                  }`}
                                 >
-                                  {selectedAdditions.has(addition.id.toString()) && (
+                                  {selectedAdditions.has(addition.id) && (
                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                   )}
                                 </button>
-                                <span className={`arabic-text text-sm ${addition.isAvailable ? 'text-gray-800' : 'text-gray-400'
-                                  }`}>
+                                <span className={`arabic-text text-sm ${
+                                  addition.is_available ? 'text-gray-800' : 'text-gray-400'
+                                }`}>
                                   {addition.name}
                                 </span>
                               </div>
-                              <span className={`arabic-text text-sm ${addition.isAvailable ? 'text-gray-500' : 'text-gray-300'
-                                }`}>
-                                + {formatSYPPrice(parseFloat(addition.priceSyp))}
+                              <span className={`arabic-text text-sm ${
+                                addition.is_available ? 'text-gray-500' : 'text-gray-300'
+                              }`}>
+                                + {addition.price_in_syp.toLocaleString()} ل.س
                               </span>
                             </div>
                           ))}
@@ -355,15 +318,15 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                 {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
-                  disabled={!product.isAvailable}
+                  disabled={!product.is_available}
                   className="w-3/5 bg-emerald-600 text-white rounded-full py-4 flex flex-col items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   <span className="text-sm font-semibold arabic-text">اضف</span>
                   <span className="text-xs arabic-text">{(() => {
-                    const selectedAdditionsList = product.additions?.filter(addition => selectedAdditions.has(addition.id.toString())) || [];
-                    const additionsPrice = selectedAdditionsList.reduce((total, addition) => total + parseFloat(addition.priceSyp), 0);
-                    return ((parseFloat(product.priceSyp) || 0) + additionsPrice) * quantity;
-                  })()}</span>
+                    const selectedAdditionsList = product.additions?.filter(addition => selectedAdditions.has(addition.id)) || [];
+                    const additionsPrice = selectedAdditionsList.reduce((total, addition) => total + addition.price_in_syp, 0);
+                    return ((product.price_in_syp || 0) + additionsPrice) * quantity;
+                  })().toLocaleString()} ل.س</span>
                 </button>
 
                 {/* Quantity Selector */}

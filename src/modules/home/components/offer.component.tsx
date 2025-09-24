@@ -8,9 +8,9 @@ interface OfferComponentProps {
   onOfferClick?: (offer: Offer) => void;
 }
 
-export const OfferComponent: React.FC<OfferComponentProps> = ({
-  offers,
-  onOfferClick
+export const OfferComponent: React.FC<OfferComponentProps> = ({ 
+  offers, 
+  onOfferClick 
 }) => {
   const { addItem, addFlyingAnimation } = useCart();
   const [topOfferIndex, setTopOfferIndex] = React.useState(0);
@@ -47,10 +47,10 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
     const animationId = `${offer.id}-${Date.now()}`;
 
     addFlyingAnimation(animationId, offer.image_url, startX, startY, endX, endY);
-
+    
     setTimeout(() => {
       addItem({
-        id: offer.id.toString(),
+        id: offer.id,
         name: offer.title || 'Offer',
         price_in_syp: offer.price_syp,
         price_in_usd: offer.price_usd,
@@ -70,7 +70,7 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
 
   const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
     if (!isDragging) return;
-
+    
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const offset = clientX - dragStartY;
     setDragOffset(offset);
@@ -78,9 +78,9 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
 
   const handleTouchEnd = () => {
     if (!isDragging) return;
-
+    
     setIsDragging(false);
-
+    
     // Determine if we should switch offers based on drag distance
     if (Math.abs(dragOffset) > 50) {
       if (dragOffset > 0) {
@@ -97,7 +97,7 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
         }
       }
     }
-
+    
     setDragOffset(0);
   };
 
@@ -125,8 +125,8 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
   return (
     <div className="w-full">
       {/* Offers container with fixed height */}
-      <div
-        className="relative"
+      <div 
+        className="relative" 
         style={{ height: `${112 + (offers.filter(offer => offer.is_recommended).length - 1) * 20}px` }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -141,43 +141,45 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center animate-pulse">
               <div className="w-8 h-8 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
-                <svg className="w-4 h-4 text-gray-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                                 <svg className="w-4 h-4 text-gray-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                 </svg>
               </div>
             </div>
           </div>
         )}
-        {offers
-          .filter(offer => offer.is_recommended)
-          .map((offer, index) => {
-            const isTopOffer = index === topOfferIndex;
-            const adjustedIndex = index - topOfferIndex;
-
-            // Only show the top offer and one underneath
-            const isVisible = adjustedIndex >= 0 && adjustedIndex <= 1;
-
-            return (
-              <div
-                key={offer.id}
-                className={`w-full cursor-pointer absolute transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                  }`}
-                style={{
-                  top: `${adjustedIndex * 20}px`,
-                  zIndex: offers.filter(offer => offer.is_recommended).length - Math.abs(adjustedIndex)
-                }}
-                onClick={() => handleOfferClick(offer)}
-              >
-                {/* Offer card with two columns */}
-                <div
-                  className={`w-full h-28 rounded-2xl overflow-hidden flex transition-all duration-500 ${isTopOffer
-                      ? 'shadow-2xl'
-                      : 'blur-[2px] opacity-70'
-                    }`}
-                  style={{
-                    backgroundColor: isTopOffer ? primaryColor : '#9CA3AF',
-                    transition: 'background-color 0.5s ease-in-out'
+                 {offers
+           .filter(offer => offer.is_recommended)
+           .map((offer, index) => {
+             const isTopOffer = index === topOfferIndex;
+             const adjustedIndex = index - topOfferIndex;
+             
+                           // Only show the top offer and one underneath
+              const isVisible = adjustedIndex >= 0 && adjustedIndex <= 1;
+             
+             return (
+               <div
+                 key={offer.id}
+                 className={`w-full cursor-pointer absolute transition-all duration-500 ${
+                   isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                 }`}
+                                   style={{
+                    top: `${adjustedIndex * 20}px`,
+                    zIndex: offers.filter(offer => offer.is_recommended).length - Math.abs(adjustedIndex)
                   }}
+                 onClick={() => handleOfferClick(offer)}
+               >
+                {/* Offer card with two columns */}
+                                                                                    <div 
+                                         className={`w-full h-28 rounded-2xl overflow-hidden flex transition-all duration-500 ${
+                         isTopOffer 
+                           ? 'shadow-2xl' 
+                           : 'blur-[2px] opacity-70'
+                       }`} 
+                      style={{ 
+                        backgroundColor: isTopOffer ? primaryColor : '#9CA3AF',
+                        transition: 'background-color 0.5s ease-in-out'
+                      }}
                 >
                   {/* Recommended badge */}
                   {offer.is_recommended && (
@@ -185,7 +187,7 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
                       <span className="text-black text-xs font-semibold arabic-text">موصى بها</span>
                     </div>
                   )}
-
+                  
                   {/* Left column - Image */}
                   <div className="w-1/4 h-full flex items-center justify-start p-1 pl-2">
                     <div className="relative">
@@ -197,7 +199,7 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
                         />
                       </div>
                       {/* White circle with + button */}
-                      <div
+                      <div 
                         className="absolute bottom-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md cursor-pointer hover:bg-gray-100 transition-colors duration-200"
                         onClick={(e) => handleAddToCart(e, offer)}
                       >
@@ -208,7 +210,7 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
                       </div>
                     </div>
                   </div>
-
+                  
                   {/* Right column - Text content */}
                   <div className="w-3/4 h-full p-4 flex flex-col justify-center">
                     {offer.title && (
@@ -237,69 +239,74 @@ export const OfferComponent: React.FC<OfferComponentProps> = ({
                 </div>
               </div>
             );
-          })}
-      </div>
-
-      {/* Navigation arrows and dots - positioned outside offers container */}
-      <div className="flex flex-col items-center mt-4 mb-8 relative z-30">
-        <div className="flex items-center gap-4">
-          {/* Previous arrow */}
-          <button
-            onClick={handlePrevOffer}
-            disabled={topOfferIndex === 0}
-            className={`w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200 ${topOfferIndex === 0
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'cursor-pointer'
-              }`}
-            style={{
-              backgroundColor: topOfferIndex === 0
-                ? '#D1D5DB'
-                : `${primaryColor}`
-            }}
-          >
-            <svg className={`w-4 h-4 ${topOfferIndex === 0 ? 'text-gray-400' : 'text-white'
-              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Dots indicator */}
-          <div className="flex gap-1">
-            {offers
-              .filter(offer => offer.is_recommended)
-              .map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 ${index === topOfferIndex
-                      ? 'bg-[#50BF63] scale-110'
-                      : 'bg-gray-300 hover:bg-gray-400'
-                    }`}
-                />
-              ))}
-          </div>
-
-          {/* Next arrow */}
-          <button
-            onClick={handleNextOffer}
-            disabled={topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1}
-            className={`w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200 ${topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'cursor-pointer'
-              }`}
-            style={{
-              backgroundColor: topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1
-                ? '#D1D5DB'
-                : `${primaryColor}`
-            }}
-          >
-            <svg className={`w-4 h-4 ${topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1 ? 'text-gray-400' : 'text-white'
-              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+                     })}
+       </div>
+       
+       {/* Navigation arrows and dots - positioned outside offers container */}
+       <div className="flex flex-col items-center mt-4 mb-8 relative z-30">
+         <div className="flex items-center gap-4">
+                             {/* Previous arrow */}
+               <button
+                 onClick={handlePrevOffer}
+                 disabled={topOfferIndex === 0}
+                 className={`w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200 ${
+                   topOfferIndex === 0
+                     ? 'bg-gray-300 cursor-not-allowed'
+                     : 'cursor-pointer'
+                 }`}
+                                   style={{
+                    backgroundColor: topOfferIndex === 0 
+                      ? '#D1D5DB' 
+                      : `${primaryColor}`
+                  }}
+               >
+                 <svg className={`w-4 h-4 ${
+                   topOfferIndex === 0 ? 'text-gray-400' : 'text-white'
+                 }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                 </svg>
+               </button>
+               
+               {/* Dots indicator */}
+               <div className="flex gap-1">
+                 {offers
+                   .filter(offer => offer.is_recommended)
+                   .map((_, index) => (
+                     <button
+                       key={index}
+                       onClick={() => handleDotClick(index)}
+                       className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                         index === topOfferIndex 
+                           ? 'bg-[#50BF63] scale-110' 
+                           : 'bg-gray-300 hover:bg-gray-400'
+                       }`}
+                     />
+                   ))}
+               </div>
+               
+               {/* Next arrow */}
+               <button
+                 onClick={handleNextOffer}
+                 disabled={topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1}
+                 className={`w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200 ${
+                   topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1
+                     ? 'bg-gray-300 cursor-not-allowed'
+                     : 'cursor-pointer'
+                 }`}
+                                   style={{
+                    backgroundColor: topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1 
+                      ? '#D1D5DB' 
+                      : `${primaryColor}`
+                  }}
+               >
+                 <svg className={`w-4 h-4 ${
+                   topOfferIndex === offers.filter(offer => offer.is_recommended).length - 1 ? 'text-gray-400' : 'text-white'
+                 }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                 </svg>
+               </button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
-};
+     </div>
+   );
+ };

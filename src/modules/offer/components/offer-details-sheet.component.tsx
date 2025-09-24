@@ -119,7 +119,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
 
     setTimeout(() => {
       addItem({
-        id: offer.id.toString(),
+        id: offer.id,
         name: offer.title || 'Offer',
         price_in_syp: offer.price_syp,
         price_in_usd: offer.price_usd,
@@ -195,7 +195,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
               </button>
             </div>
 
-            {/* White container covering bottom of image */}
+                        {/* White container covering bottom of image */}
             <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-lg overflow-hidden" style={{ height: '70%', marginTop: '-20px' }}>
               <div className="p-6 pl-0 pb-24 h-full overflow-y-auto">
                 <div className="text-center text-gray-600 font-bold arabic-text text-2xl mb-12">{offer.title}</div>
@@ -221,21 +221,21 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
                               <div className="w-1/5 h-full flex items-center justify-start p-1 pl-0">
                                 <div className="relative">
                                   <div className="w-20 h-20 rounded-xl overflow-hidden" style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)' }}>
-                                    <img
-                                      src={product.images?.[0] || "/images/default-product.png"}
-                                      alt={product.name}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="w-4/5 h-full flex flex-col justify-start pt-10">
-                                <h3 className="text-sm font-medium text-black mb-1 arabic-text leading-tight">
-                                  {product.name}
-                                </h3>
-                                <p className="text-xs line-clamp-2 mb-2 arabic-text leading-tight text-gray-600">
-                                  {product.description}
-                                </p>
+                                                                       <img
+                                     src={product.images?.[0]?.image_url || product.product_images?.[0]?.image_url || "/images/default-product.png"}
+                                     alt={product.name}
+                                     className="w-full h-full object-cover"
+                                   />
+                                 </div>
+                               </div>
+                             </div>
+                             <div className="w-4/5 h-full flex flex-col justify-start pt-10">
+                               <h3 className="text-sm font-medium text-black mb-1 arabic-text leading-tight">
+                                 {product.name}
+                               </h3>
+                               <p className="text-xs line-clamp-2 mb-2 arabic-text leading-tight text-gray-600">
+                                 {product.description}
+                               </p>
                               </div>
                             </div>
                           </div>

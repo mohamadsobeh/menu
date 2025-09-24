@@ -8,9 +8,9 @@ interface FeaturedProductsComponentProps {
   onProductClick?: (product: Offer) => void;
 }
 
-export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps> = ({
-  featuredProducts,
-  onProductClick
+export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps> = ({ 
+  featuredProducts, 
+  onProductClick 
 }) => {
   const { addItem, addFlyingAnimation } = useCart();
 
@@ -34,10 +34,10 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
     const animationId = `${product.id}-${Date.now()}`;
 
     addFlyingAnimation(animationId, product.image_url, startX, startY, endX, endY);
-
+    
     setTimeout(() => {
       addItem({
-        id: product.id.toString(),
+        id: product.id,
         name: product.title || 'Featured Product',
         price_in_syp: product.price_syp,
         price_in_usd: product.price_usd,
@@ -75,7 +75,7 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
                 alt={product.title || 'Featured Product'}
                 className="w-full h-full object-cover"
               />
-
+              
               {/* Add to Cart Button */}
               <button
                 className="absolute bottom-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors duration-200"

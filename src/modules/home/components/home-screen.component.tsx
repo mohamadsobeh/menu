@@ -2,9 +2,9 @@ import React from 'react';
 import { HomeScreenPage } from '../pages';
 
 interface HomeScreenProps {
-  restaurantId: number;
+  userId: string;
 }
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ restaurantId }) => {
-  return <HomeScreenPage restaurantId={restaurantId} />;
+export const HomeScreen: React.FC<HomeScreenProps> = ({ userId }) => {
+  return <HomeScreenPage userId={userId} />;
 };

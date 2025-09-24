@@ -19,19 +19,20 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
   whiteLabelConfig
 }) => {
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 ease-in-out transform ${isVisible
-          ? 'translate-y-0 opacity-100'
+    <div 
+      className={`fixed top-0 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 ease-in-out transform ${
+        isVisible 
+          ? 'translate-y-0 opacity-100' 
           : '-translate-y-full opacity-0'
-        }`}
+      }`}
     >
-      {/* Header Row - Same as original header */}
-      <div className="flex items-center justify-between px-4 py-3">
+             {/* Header Row - Same as original header */}
+       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3 ml-2">
-          {whiteLabelConfig?.logoUrl && (
+          {whiteLabelConfig?.logo_url && (
             <div className="w-10 h-10 rounded-lg overflow-hidden">
               <img
-                src={whiteLabelConfig.logoUrl}
+                src={whiteLabelConfig.logo_url}
                 alt="Logo"
                 className="w-full h-full object-cover"
               />
@@ -39,25 +40,12 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
           )}
           <button
             onClick={onSearchClick}
-            className="px-3 py-1.5 border rounded-lg text-sm font-medium arabic-text transition-colors duration-200"
-            style={{
-              borderColor: whiteLabelConfig?.primaryColor || '#50BF63',
-              color: whiteLabelConfig?.primaryColor || '#50BF63',
-              fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
-              e.currentTarget.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = whiteLabelConfig?.primaryColor || '#50BF63';
-            }}
+            className="px-3 py-1.5 border border-[#50BF63] rounded-lg text-[#50BF63] text-sm font-medium arabic-text hover:bg-[#50BF63] hover:text-white transition-colors duration-200"
           >
             تابعنا
           </button>
         </div>
-
+        
         {/* Right side icons */}
         <div className="flex items-center gap-3">
           <button
@@ -80,7 +68,7 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
               />
             </svg>
           </button>
-
+          
           <button
             onClick={onProfileClick}
             className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center relative"
@@ -101,11 +89,11 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
                 fill="#374151"
               />
             </svg>
-            <div className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full" style={{ backgroundColor: whiteLabelConfig?.accentColor || '#50BF63' }}></div>
+            <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#50BF63] rounded-full"></div>
           </button>
         </div>
       </div>
-
+      
       {/* Categories Row - Below header */}
       <div className="px-4 py-3">
         <div className="flex gap-4 overflow-x-auto scrollbar-hide">
@@ -113,20 +101,7 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
             <button
               key={category.id}
               onClick={() => onCategoryClick(category)}
-              className="px-3 py-1.5 rounded-full text-sm font-medium arabic-text whitespace-nowrap transition-colors duration-200"
-              style={{
-                backgroundColor: whiteLabelConfig?.secondaryColor || '#f3f4f6',
-                color: whiteLabelConfig?.textColor || '#374151',
-                fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = whiteLabelConfig?.secondaryColor || '#f3f4f6';
-                e.currentTarget.style.color = whiteLabelConfig?.textColor || '#374151';
-              }}
+              className="px-3 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700 arabic-text whitespace-nowrap hover:bg-gray-200 transition-colors duration-200"
             >
               {category.name}
             </button>

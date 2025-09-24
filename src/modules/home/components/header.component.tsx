@@ -29,33 +29,20 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
       {/* Left side - Logo and Follow Us button */}
       <div className="flex items-center gap-3">
         {/* Logo */}
-        {whiteLabelConfig?.logoUrl && (
+        {whiteLabelConfig?.logo_url && (
           <div className="w-10 h-10 rounded-lg overflow-hidden">
             <img
-              src={whiteLabelConfig.logoUrl}
+              src={whiteLabelConfig.logo_url}
               alt="Logo"
               className="w-full h-full object-cover"
             />
           </div>
         )}
-
+        
         {/* Follow Us button */}
         <button
           onClick={handleFollowUsClick}
-          className="px-3 py-1.5 border rounded-lg text-sm font-medium arabic-text transition-colors duration-200"
-          style={{
-            borderColor: whiteLabelConfig?.primaryColor || '#50BF63',
-            color: whiteLabelConfig?.primaryColor || '#50BF63',
-            fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
-            e.currentTarget.style.color = 'white';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color = whiteLabelConfig?.primaryColor || '#50BF63';
-          }}
+          className="px-3 py-1.5 border border-[#50BF63] rounded-lg text-[#50BF63] text-sm font-medium arabic-text hover:bg-[#50BF63] hover:text-white transition-colors duration-200"
         >
           تابعنا
         </button>
@@ -83,7 +70,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
             fill="#374151"
           />
         </svg>
-
+        
         {/* Notification dot */}
         <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#50BF63] rounded-full"></div>
       </button>

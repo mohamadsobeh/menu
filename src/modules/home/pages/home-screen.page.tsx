@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHomeScreen } from '../hooks';
-import { SearchBar, BannerComponent, CategoriesListComponent, HeaderComponent, StickyCategoriesNav, FooterBottomSheet } from '../components';
-import { OfferDetailsSheet, useOfferDetailsSheet, RecommendedOffersComponent, useRecommendedOffers } from '../../offer';
-import { ProductDetailsSheet, useProductDetailsSheet } from '../../product-details';
+import { SearchBar, BannerComponent, OfferComponent, CategoriesListComponent, HeaderComponent, ProductDetailsSheet, StickyCategoriesNav, FooterBottomSheet } from '../components';
+import { OfferDetailsSheet, useOfferDetailsSheet } from '../../offer';
+import { useProductDetailsSheet } from '../hooks';
 import type { Banner, Offer, Product, Category } from '../../../shared/types';
 import { ShimmerHomeScreen, FlyingAnimation, FloatingCartButton, Toast } from '../../../shared/components';
 import { ProfileBottomSheet } from '../../profile';
@@ -10,29 +10,21 @@ import { OrdersBottomSheet, OrderDetailsBottomSheet } from '../../orders';
 import { AssessmentBottomSheet } from '../../assessment';
 
 interface HomeScreenPageProps {
-  restaurantId: number;
+  userId: string;
 }
 
-export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) => {
+export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ userId }) => {
   const {
     isLoading,
     isFetching,
     isError,
     errorMessage,
     activeBanners,
+    recommendedOffers,
     sortedCategories,
     whiteLabelConfig,
     refetch,
-  } = useHomeScreen(restaurantId);
-
-  // Use the new recommended offers endpoint
-  const {
-    computedData: recommendedOffersData,
-    isLoading: isRecommendedOffersLoading,
-  } = useRecommendedOffers({
-    initialPage: 1,
-    initialLimit: 10,
-  });
+  } = useHomeScreen(userId);
 
   // Get featured products for the selected offer
   const getFeaturedProductsForOffer = React.useCallback((offer: Offer | null) => {
@@ -82,13 +74,19 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
   };
 
   const handleProductClick = (product: Product, categoryImageUrl?: string) => {
-    console.log("Clicked product:", product);
-    console.log("isAvailable value:", product?.isAvailable);
+    // Prevent search from unfocusing when clicking on products
+    setShouldUnfocusSearch(false);
 
-    if (product?.isAvailable === true) {
-      openProductDetails(product, categoryImageUrl);
-    } else {
+    // Re-focus the search bar after a short delay to maintain focus
+    setTimeout(() => {
+      setShouldUnfocusSearch(false);
+    }, 50);
+
+    if (!product.is_available) {
       showToast('هذا المنتج غير متوفر حالياً', 'warning');
+    } else {
+      // Open product details sheet
+      openProductDetails(product, categoryImageUrl);
     }
   };
 
@@ -321,15 +319,11 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
           />
         )}
 
-        {/* Recommended Offers Component */}
-        {!isSearchFocused && (
-          <RecommendedOffersComponent
-            offers={recommendedOffersData?.recommendedOffers || []}
-            pagination={recommendedOffersData?.pagination || { page: 1, limit: 10, total: 0, totalPages: 0, hasNext: false, hasPrev: false }}
-            isLoading={isRecommendedOffersLoading}
+        {/* Offer Component */}
+        {recommendedOffers.length > 0 && !isSearchFocused && (
+          <OfferComponent
+            offers={recommendedOffers}
             onOfferClick={handleOfferClick}
-            whiteLabelConfig={whiteLabelConfig}
-            showPagination={false}
           />
         )}
 
@@ -339,7 +333,6 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
             categories={isSearchFocused ? filteredCategories : sortedCategories}
             onProductClick={handleProductClick}
             onCategoryClick={handleCategoryClick}
-            whiteLabelConfig={whiteLabelConfig}
           />
         )}
 
@@ -359,7 +352,7 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
         <FlyingAnimation />
 
         {/* Floating Cart Button */}
-        <FloatingCartButton whiteLabelConfig={whiteLabelConfig} />
+        <FloatingCartButton />
 
         {/* Toast Notification */}
         <Toast
@@ -421,7 +414,6 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
         <FooterBottomSheet
           isOpen={isFooterSheetOpen}
           onClose={closeFooterSheet}
-          whiteLabelConfig={whiteLabelConfig}
         />
 
         {/* Extra space to ensure scrolling */}

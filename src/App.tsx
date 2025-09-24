@@ -9,7 +9,7 @@ function App() {
     <QueryProvider>
       <CartProvider>
         <div className="w-full h-screen">
-          <HomeScreen restaurantId={1} />
+          <HomeScreen userId='0a3c1ff5-79b3-4bc4-a788-38bebf49e997' />
         </div>
       </CartProvider>
     </QueryProvider>

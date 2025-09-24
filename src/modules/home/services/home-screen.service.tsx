@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type { HomeScreenResponse, ApiResponse } from '../../../shared/types';
+import type { HomeScreenResponse } from '../../../shared/types';
 import { apiClient } from '../../../shared/utils';
 
 // Query keys for React Query
@@ -8,17 +8,16 @@ export const homeScreenKeys = {
   details: (userId: string) => [...homeScreenKeys.all, userId] as const,
 };
 
-export const fetchHomeScreenData = async (restaurantId: number): Promise<HomeScreenResponse> => {
-  const response = await apiClient.get<ApiResponse<HomeScreenResponse>>('/customer/home', { restaurantId: restaurantId.toString() });
-  return response.data;
+export const fetchHomeScreenData = async (userId: string): Promise<HomeScreenResponse> => {
+  return apiClient.get<HomeScreenResponse>('/get-home-screen', { user_id: userId });
 };
 
-export const useHomeScreenData = (restaurantId: number) => {
+export const useHomeScreenData = (userId: string) => {
   return useQuery({
-    queryKey: homeScreenKeys.details(restaurantId.toString()),
-    queryFn: () => fetchHomeScreenData(restaurantId),
-    enabled: !!restaurantId,
-    staleTime: 5 * 60 * 1000,
+    queryKey: homeScreenKeys.details(userId),
+    queryFn: () => fetchHomeScreenData(userId),
+    enabled: !!userId, 
+    staleTime: 5 * 60 * 1000, 
     gcTime: 10 * 60 * 1000,
     retry: (failureCount, error) => {
       if (failureCount >= 3) return false;
@@ -35,8 +34,8 @@ export const homeScreenUtils = {
   // Get active banners only, sorted by display order
   getActiveBanners: (data: HomeScreenResponse) => {
     return data.banners
-      .filter(banner => banner.isActive)
-      .sort((a, b) => a.displayOrder - b.displayOrder);
+      .filter(banner => banner.is_active)
+      .sort((a, b) => a.display_order - b.display_order);
   },
 
   // Get recommended offers
@@ -63,26 +62,26 @@ export const homeScreenUtils = {
 
   // Get available products from all categories
   getAvailableProducts: (data: HomeScreenResponse) => {
-    return data.categories.flatMap(category =>
-      category.products.filter(product => product.isAvailable)
+    return data.categories.flatMap(category => 
+      category.products.filter(product => product.is_available)
     );
   },
 
   // Get favorite products
   getFavoriteProducts: (data: HomeScreenResponse) => {
-    return data.categories.flatMap(category =>
-      category.products.filter(product => product.isFav)
+    return data.categories.flatMap(category => 
+      category.products.filter(product => product.isfav)
     );
   },
 
   // Get products by category
-  getProductsByCategory: (data: HomeScreenResponse, categoryId: number) => {
+  getProductsByCategory: (data: HomeScreenResponse, categoryId: string) => {
     const category = data.categories.find(cat => cat.id === categoryId);
     return category?.products || [];
   },
 
   // Get categories sorted by display order
   getSortedCategories: (data: HomeScreenResponse) => {
-    return data.categories.sort((a, b) => a.displayOrder - b.displayOrder);
+    return data.categories.sort((a, b) => a.display_order - b.display_order);
   },
 };
