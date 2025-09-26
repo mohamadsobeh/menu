@@ -98,13 +98,20 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
         return (
           <div key={category.id} className="mb-8" data-category-id={category.id}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold arabic-text pr-4" style={{ color: '#52535D' }}>
+              <h2
+                className="text-2xl font-bold arabic-text pr-4"
+                style={{
+                  color: whiteLabelConfig?.primaryColor || '#52535D'
+                }}
+              >
                 {category.name}
               </h2>
               <button
                 onClick={() => toggleCategory(category.id)}
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-200"
-                style={{ backgroundColor: 'rgba(80, 191, 99, 0.9)' }}
+                style={{
+                  backgroundColor: whiteLabelConfig?.primaryColor || 'rgba(80, 191, 99, 0.9)'
+                }}
               >
                 <svg
                   width="12"
@@ -119,7 +126,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                 >
                   <path
                     d="M2 4L6 8L10 4"
-                    stroke="white"
+                    stroke={whiteLabelConfig?.textColor || 'white'}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -129,9 +136,8 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
             </div>
 
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isCollapsed ? 'max-h-0 opacity-0' : 'max-h-none opacity-100'
-              }`}
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-h-0 opacity-0' : 'max-h-none opacity-100'
+                }`}
             >
               <div className="flex flex-col gap-6">
                 {category.products.map((product, productIndex) => {
@@ -141,13 +147,15 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                   return (
                     <div
                       key={product.id}
-                      className={`w-full cursor-pointer relative transition-all duration-500 ease-out transform ${
-                        isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                      } ${!product.isAvailable ? 'grayscale opacity-60' : ''}`}
+                      className={`w-full cursor-pointer relative transition-all duration-500 ease-out transform ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                        } ${!product.isAvailable ? 'grayscale opacity-60' : ''}`}
                       style={{ transitionDelay: `${productIndex * 50}ms` }}
                       onClick={() => handleProductClick(product, productImage)}
                     >
-                      <div className="w-full h-36 rounded-xl overflow-hidden flex gap-6 bg-white relative">
+                      <div
+                        className="w-full h-36 rounded-xl overflow-hidden flex gap-6 relative"
+                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+                      >
                         <div className="absolute bottom-0 left-4 right-4 h-px bg-gray-200"></div>
 
                         <div className="w-1/5 h-full flex items-center justify-start p-1 pl-2">
@@ -159,22 +167,31 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                               <img
                                 src={productImage}
                                 alt={product.name}
-                                className={`w-full h-full object-cover ${
-                                  !product.isAvailable ? 'grayscale opacity-60' : ''
-                                }`}
+                                className={`w-full h-full object-cover ${!product.isAvailable ? 'grayscale opacity-60' : ''
+                                  }`}
                               />
                             </div>
                             <div
-                              className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-md transition-colors duration-200 ${
-                                product.isAvailable
-                                  ? 'bg-white cursor-pointer hover:bg-gray-100'
-                                  : 'bg-gray-300 cursor-not-allowed'
-                              }`}
+                              className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-md ${product.isAvailable
+                                ? 'cursor-pointer'
+                                : 'cursor-not-allowed'
+                                }`}
+                              style={{
+                                backgroundColor: product.isAvailable
+                                  ? whiteLabelConfig?.secondaryColor || '#FFFFFF'
+                                  : '#ccc'
+                              }}
                               onClick={(e) => handleAddToCart(e, product, productImage)}
                             >
                               <div className="relative w-3 h-3">
-                                <div className="absolute top-1/2 left-0 w-full h-0.5 bg-black transform -translate-y-1/2"></div>
-                                <div className="absolute left-1/2 top-0 w-0.5 h-full bg-black transform -translate-x-1/2"></div>
+                                <div
+                                  className="absolute top-1/2 left-0 w-full h-0.5 transform -translate-y-1/2"
+                                  style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                                ></div>
+                                <div
+                                  className="absolute left-1/2 top-0 w-0.5 h-full transform -translate-x-1/2"
+                                  style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                                ></div>
                               </div>
                             </div>
                           </div>
@@ -182,15 +199,25 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
 
                         <div className="w-4/5 h-full p-4 flex flex-col justify-start pt-6">
                           {product.name && (
-                            <h3 className="text-sm font-medium text-black mb-1 arabic-text leading-tight">
+                            <h3
+                              className="text-sm font-medium mb-1 arabic-text leading-tight"
+                              style={{
+                                color: '#000'
+                              }}
+                            >
                               {product.name}
                             </h3>
                           )}
+
                           {product.description && (
                             <p
-                              className={`text-xs line-clamp-2 mb-2 arabic-text leading-tight ${
-                                !product.isAvailable ? 'text-gray-400' : 'text-gray-600'
-                              }`}
+                              className={`text-xs line-clamp-2 mb-2 arabic-text leading-tight ${!product.isAvailable ? 'opacity-70' : ''
+                                }`}
+                              style={{
+                                color: !product.isAvailable
+                                  ? '#9CA3AF'
+                                  : whiteLabelConfig?.secondaryColor || '#555'
+                              }}
                             >
                               {product.description}
                             </p>
@@ -198,14 +225,12 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                           <div className="flex gap-1">
                             {product.priceSyp && parseFloat(product.priceSyp) > 0 && (
                               <p
-                                className={`text-lg font-bold arabic-text leading-tight ${
-                                  !product.isAvailable ? 'text-gray-400' : ''
-                                }`}
+                                className={`text-lg font-bold arabic-text leading-tight ${!product.isAvailable ? 'text-gray-400' : ''
+                                  }`}
                                 style={{
                                   color: !product.isAvailable
                                     ? '#9CA3AF'
-                                    : whiteLabelConfig?.primaryColor || '#50BF63',
-                                  fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
+                                    : whiteLabelConfig?.primaryColor || '#50BF63'
                                 }}
                               >
                                 {formatSYPPrice(parseFloat(product.priceSyp))}
@@ -213,10 +238,8 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                             )}
                             {whiteLabelConfig?.usdPrice && product.priceSyp && parseFloat(product.priceSyp) > 0 && (
                               <p
-                                className={`text-sm arabic-text leading-tight ${
-                                  !product.isAvailable ? 'text-gray-300' : 'text-gray-400'
-                                }`}
-                                style={{ fontFamily: whiteLabelConfig?.fontFamily || 'inherit' }}
+                                className={`text-sm arabic-text leading-tight ${!product.isAvailable ? 'text-gray-300' : 'text-gray-400'
+                                  }`}
                               >
                                 ${(parseFloat(product.priceSyp) / whiteLabelConfig.usdPrice).toFixed(2)}
                               </p>
@@ -225,9 +248,13 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                           {product.isFav && (
                             <div className="mt-1">
                               <span
-                                className={`inline-block px-2 py-1 rounded text-xs font-bold text-black arabic-text ${
-                                  !product.isAvailable ? 'bg-gray-300' : 'bg-[#FFC120]'
-                                }`}
+                                className="inline-block px-2 py-1 rounded text-xs font-bold arabic-text"
+                                style={{
+                                  backgroundColor: !product.isAvailable
+                                    ? '#ccc'
+                                    : whiteLabelConfig?.accentColor || '#FFC120',
+                                  color: whiteLabelConfig?.textColor || '#000'
+                                }}
                               >
                                 مفضلة
                               </span>

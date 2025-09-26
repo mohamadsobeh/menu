@@ -7,6 +7,7 @@ import { OrderSummaryComponent as OrderSummary } from "./order-summary.component
 import { PlaceOrderButton } from "./place-order-button.component";
 import type { PhoneNumberForm } from "../../../shared/types";
 import { PaymentFooterBottomSheet } from "./payment-footer-bottom-sheet.component";
+import { useWhiteLabelColors } from "../../../providers/white-label-provider";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   onOrderPlaced,
 }) => {
+  const { backgroundColor } = useWhiteLabelColors();
   const {
     checkoutState,
     formData,
@@ -112,11 +114,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       {/* Full Page Checkout Modal */}
       <div
         ref={modalRef}
-        className="relative w-full h-full bg-white flex flex-col"
-        style={{ transform }}
+        className="relative w-full h-full flex flex-col"
+        style={{ backgroundColor: backgroundColor, transform }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <div
+          className="flex items-center justify-between p-4 border-b border-gray-200"
+          style={{ backgroundColor: backgroundColor }}
+        >
           <button onClick={handleClose} className="p-2">
             <svg
               className="w-6 h-6"
@@ -156,7 +161,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         </div>
 
         {/* Order Items */}
-        <div className="flex-1 overflow-y-auto bg-white">
+        <div
+          className="flex-1 overflow-y-auto"
+          style={{ backgroundColor: backgroundColor }}
+        >
           {checkoutState.orderSummary.items.map((item, index) => (
             <div
               key={`${item.id}-${index}`}

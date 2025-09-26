@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Offer, ApiResponse, PaginatedResponse } from '../../../shared/types';
 import { apiClient } from '../../../shared/utils';
+import { mapOffers } from './offer-mapper';
 
 // Query keys for React Query
 export const offersKeys = {
@@ -15,11 +16,18 @@ export interface OffersParams {
 }
 
 export const fetchOffersData = async (params: OffersParams): Promise<PaginatedResponse<Offer>> => {
-    const response = await apiClient.get<ApiResponse<PaginatedResponse<Offer>>>('/customer/offers', {
+    const response = await apiClient.get<ApiResponse<PaginatedResponse<any>>>('/customer/offers', {
         page: params.page.toString(),
         limit: params.limit.toString()
     });
-    return response.data;
+
+    // Apply mapper to transform API response
+    const mappedData = mapOffers(response.data.data);
+
+    return {
+        data: mappedData,
+        meta: response.data.meta
+    };
 };
 
 export const useOffersData = (params: OffersParams) => {

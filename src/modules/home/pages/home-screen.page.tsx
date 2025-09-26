@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHomeScreen } from '../hooks';
 import { SearchBar, BannerComponent, CategoriesListComponent, HeaderComponent, StickyCategoriesNav, FooterBottomSheet } from '../components';
-import { OfferDetailsSheet, useOfferDetailsSheet, RecommendedOffersComponent, useRecommendedOffers } from '../../offer';
+import { OfferDetailsSheet, useOfferDetailsSheet, OfferCarouselComponent, useRecommendedOffers } from '../../offer';
 import { ProductDetailsSheet, useProductDetailsSheet } from '../../product-details';
 import type { Banner, Offer, Product, Category } from '../../../shared/types';
 import { ShimmerHomeScreen, FlyingAnimation, FloatingCartButton, Toast } from '../../../shared/components';
 import { ProfileBottomSheet } from '../../profile';
 import { OrdersBottomSheet, OrderDetailsBottomSheet } from '../../orders';
 import { AssessmentBottomSheet } from '../../assessment';
+import { useWhiteLabel } from '../../../providers/white-label-provider';
 
 interface HomeScreenPageProps {
   restaurantId: number;
 }
 
 export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) => {
+  const { setWhiteLabelConfig } = useWhiteLabel();
   const {
     isLoading,
     isFetching,
@@ -25,10 +27,16 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
     refetch,
   } = useHomeScreen(restaurantId);
 
-  // Use the new recommended offers endpoint
+  // Set whiteLabelConfig in global context when it changes
+  useEffect(() => {
+    if (whiteLabelConfig) {
+      setWhiteLabelConfig(whiteLabelConfig);
+    }
+  }, [whiteLabelConfig, setWhiteLabelConfig]);
+
+  // Use the dedicated recommended offers API
   const {
     computedData: recommendedOffersData,
-    isLoading: isRecommendedOffersLoading,
   } = useRecommendedOffers({
     initialPage: 1,
     initialLimit: 10,
@@ -38,8 +46,8 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
   const getFeaturedProductsForOffer = React.useCallback((offer: Offer | null) => {
     if (!offer) return [];
 
-    // Return the offer's own featured_products array
-    return offer.featured_products || [];
+    // Since the new Offer type doesn't include products, return empty array
+    return [];
   }, []);
 
   const {
@@ -268,7 +276,11 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
   }
 
   return (
-    <div ref={setMainContainerRef} className="w-full h-full min-h-screen bg-white overflow-y-auto">
+    <div
+      ref={setMainContainerRef}
+      className="w-full h-full min-h-screen overflow-y-auto"
+      style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+    >
       {/* Background refresh indicator */}
       {isFetching && (
         <div className="fixed top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded text-sm z-50 arabic-text">
@@ -323,13 +335,9 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
 
         {/* Recommended Offers Component */}
         {!isSearchFocused && (
-          <RecommendedOffersComponent
+          <OfferCarouselComponent
             offers={recommendedOffersData?.recommendedOffers || []}
-            pagination={recommendedOffersData?.pagination || { page: 1, limit: 10, total: 0, totalPages: 0, hasNext: false, hasPrev: false }}
-            isLoading={isRecommendedOffersLoading}
             onOfferClick={handleOfferClick}
-            whiteLabelConfig={whiteLabelConfig}
-            showPagination={false}
           />
         )}
 

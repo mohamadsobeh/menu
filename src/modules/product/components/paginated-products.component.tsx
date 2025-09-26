@@ -101,8 +101,9 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                 {products.map((product) => (
                     <div
                         key={product.id}
-                        className={`bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200 ${!product.isAvailable ? 'opacity-60 grayscale' : ''
+                        className={`rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200 ${!product.isAvailable ? 'opacity-60 grayscale' : ''
                             }`}
+                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
                         onClick={() => handleProductClick(product)}
                     >
                         {/* Product Image */}
@@ -196,14 +197,13 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                 onClick={(e) => handleAddToCart(e, product)}
                                 disabled={!product.isAvailable}
                                 className={`w-full py-2 px-4 rounded-lg font-medium arabic-text transition-colors duration-200 ${product.isAvailable
-                                        ? 'text-white'
-                                        : 'text-gray-400 bg-gray-200 cursor-not-allowed'
+                                    ? 'text-white'
+                                    : 'text-gray-400 bg-gray-200 cursor-not-allowed'
                                     }`}
                                 style={{
                                     backgroundColor: product.isAvailable
                                         ? (whiteLabelConfig?.primaryColor || '#50BF63')
                                         : '#E5E7EB',
-                                    fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
                                 }}
                                 onMouseEnter={(e) => {
                                     if (product.isAvailable) {
@@ -248,8 +248,8 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                     key={pageNum}
                                     onClick={() => handlePageChange(pageNum)}
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${pageNum === pagination.page
-                                            ? 'text-white'
-                                            : 'text-gray-700 hover:bg-gray-100'
+                                        ? 'text-white'
+                                        : 'text-gray-700 hover:bg-gray-100'
                                         }`}
                                     style={{
                                         backgroundColor: pageNum === pagination.page

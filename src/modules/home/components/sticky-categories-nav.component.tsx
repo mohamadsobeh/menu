@@ -20,10 +20,11 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
 }) => {
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 ease-in-out transform ${isVisible
-          ? 'translate-y-0 opacity-100'
-          : '-translate-y-full opacity-0'
+      className={`fixed top-0 left-0 right-0 z-40 shadow-md transition-all duration-300 ease-in-out transform ${isVisible
+        ? 'translate-y-0 opacity-100'
+        : '-translate-y-full opacity-0'
         }`}
+      style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
     >
       {/* Header Row - Same as original header */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -42,8 +43,7 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
             className="px-3 py-1.5 border rounded-lg text-sm font-medium arabic-text transition-colors duration-200"
             style={{
               borderColor: whiteLabelConfig?.primaryColor || '#50BF63',
-              color: whiteLabelConfig?.primaryColor || '#50BF63',
-              fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
+              color: whiteLabelConfig?.primaryColor || '#50BF63'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
@@ -116,8 +116,7 @@ export const StickyCategoriesNav: React.FC<StickyCategoriesNavProps> = ({
               className="px-3 py-1.5 rounded-full text-sm font-medium arabic-text whitespace-nowrap transition-colors duration-200"
               style={{
                 backgroundColor: whiteLabelConfig?.secondaryColor || '#f3f4f6',
-                color: whiteLabelConfig?.textColor || '#374151',
-                fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
+                color: whiteLabelConfig?.textColor || '#374151'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';

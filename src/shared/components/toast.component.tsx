@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useWhiteLabelColors } from '../../providers/white-label-provider';
 
 interface ToastProps {
   message: string;
@@ -8,13 +9,15 @@ interface ToastProps {
   isVisible: boolean;
 }
 
-export const Toast: React.FC<ToastProps> = ({ 
-  message, 
-  type = 'info', 
-  duration = 3000, 
-  onClose, 
-  isVisible 
+export const Toast: React.FC<ToastProps> = ({
+  message,
+  type = 'info',
+  duration = 3000,
+  onClose,
+  isVisible
 }) => {
+  const { primaryColor, secondaryColor, textColor, accentColor } = useWhiteLabelColors();
+
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
@@ -30,19 +33,24 @@ export const Toast: React.FC<ToastProps> = ({
   const getToastStyles = () => {
     switch (type) {
       case 'error':
-        return 'bg-red-500 text-white';
+        return { backgroundColor: '#ef4444', color: '#ffffff' }; // red-500
       case 'success':
-        return 'bg-green-500 text-white';
+        return { backgroundColor: primaryColor, color: '#ffffff' };
       case 'warning':
-        return 'bg-yellow-500 text-black';
+        return { backgroundColor: accentColor, color: '#000000' };
       default:
-        return 'bg-gray-800 text-white';
+        return { backgroundColor: secondaryColor, color: textColor };
     }
   };
 
+  const toastStyles = getToastStyles();
+
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in">
-      <div className={`px-6 py-4 rounded-lg shadow-lg min-w-80 max-w-md ${getToastStyles()} arabic-text text-sm font-medium flex items-center justify-center`}>
+      <div
+        className="px-6 py-4 rounded-lg shadow-lg min-w-80 max-w-md arabic-text text-sm font-medium flex items-center justify-center"
+        style={toastStyles}
+      >
         {message}
       </div>
     </div>

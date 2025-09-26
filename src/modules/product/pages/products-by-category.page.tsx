@@ -41,7 +41,10 @@ export const ProductsByCategoryPage: React.FC<ProductsByCategoryPageProps> = ({
 
     if (isError) {
         return (
-            <div className="w-full min-h-screen bg-white p-4">
+            <div
+                className="w-full min-h-screen p-4"
+                style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+            >
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center py-12">
                         <div className="text-red-500 text-lg mb-2 arabic-text">
@@ -57,7 +60,10 @@ export const ProductsByCategoryPage: React.FC<ProductsByCategoryPageProps> = ({
     }
 
     return (
-        <div className="w-full min-h-screen bg-white p-4">
+        <div
+            className="w-full min-h-screen p-4"
+            style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+        >
             <div className="max-w-6xl mx-auto">
                 {/* Products Content */}
                 {computedData && (

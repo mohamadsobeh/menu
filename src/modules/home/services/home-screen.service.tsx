@@ -39,22 +39,12 @@ export const homeScreenUtils = {
       .sort((a, b) => a.displayOrder - b.displayOrder);
   },
 
-  // Get recommended offers
-  getRecommendedOffers: (data: HomeScreenResponse) => {
-    return data.offers.filter(offer => offer.is_recommended);
-  },
 
   // Get featured products
   getFeaturedProducts: (data: HomeScreenResponse) => {
     return data.featured_products || [];
   },
 
-  // Get all offers (both regular offers and featured products)
-  getAllOffers: (data: HomeScreenResponse) => {
-    const regularOffers = data.offers || [];
-    const featuredProducts = data.featured_products || [];
-    return [...regularOffers, ...featuredProducts];
-  },
 
   // Get categories with products
   getCategoriesWithProducts: (data: HomeScreenResponse) => {

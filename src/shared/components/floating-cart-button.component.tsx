@@ -41,8 +41,7 @@ export const FloatingCartButton: React.FC<FloatingCartButtonProps> = ({ whiteLab
           onClick={handleCartClick}
           className="w-full text-white py-3 px-8 rounded-full shadow-lg flex items-center justify-center gap-4 arabic-text font-semibold text-lg transition-colors duration-200"
           style={{
-            backgroundColor: whiteLabelConfig?.primaryColor || '#50BF63',
-            fontFamily: whiteLabelConfig?.fontFamily || 'inherit'
+            backgroundColor: whiteLabelConfig?.primaryColor || '#50BF63'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor || '#45a556';

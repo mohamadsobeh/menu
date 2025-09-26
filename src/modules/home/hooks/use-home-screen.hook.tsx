@@ -17,9 +17,7 @@ export const useHomeScreen = (restaurantId: number) => {
 
     return {
       activeBanners: homeScreenUtils.getActiveBanners(data),
-      recommendedOffers: homeScreenUtils.getRecommendedOffers(data),
       featuredProducts: homeScreenUtils.getFeaturedProducts(data),
-      allOffers: homeScreenUtils.getAllOffers(data),
       categoriesWithProducts: homeScreenUtils.getCategoriesWithProducts(data),
       sortedCategories: homeScreenUtils.getSortedCategories(data),
       availableProducts: homeScreenUtils.getAvailableProducts(data),
@@ -45,9 +43,7 @@ export const useHomeScreen = (restaurantId: number) => {
 
     // Computed data
     activeBanners: computedData?.activeBanners ?? [],
-    recommendedOffers: computedData?.recommendedOffers ?? [],
     featuredProducts: computedData?.featuredProducts ?? [],
-    allOffers: computedData?.allOffers ?? [],
     categoriesWithProducts: computedData?.categoriesWithProducts ?? [],
     sortedCategories: computedData?.sortedCategories ?? [],
     availableProducts: computedData?.availableProducts ?? [],
@@ -70,9 +66,7 @@ export const useHomeScreen = (restaurantId: number) => {
     // Helper flags
     hasData: !!data,
     hasBanners: (computedData?.activeBanners?.length ?? 0) > 0,
-    hasOffers: (computedData?.recommendedOffers?.length ?? 0) > 0,
     hasFeaturedProducts: (computedData?.featuredProducts?.length ?? 0) > 0,
-    hasAllOffers: (computedData?.allOffers?.length ?? 0) > 0,
     hasCategories: (computedData?.categoriesWithProducts?.length ?? 0) > 0,
     hasProducts: (computedData?.availableProducts?.length ?? 0) > 0,
     hasFavorites: (computedData?.favoriteProducts?.length ?? 0) > 0,

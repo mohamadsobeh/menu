@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWhiteLabelColors } from '../../providers/white-label-provider';
 
 interface ShimmerProps {
   className?: string;
@@ -6,16 +7,18 @@ interface ShimmerProps {
   width?: string;
 }
 
-export const Shimmer: React.FC<ShimmerProps> = ({ 
-  className = "", 
-  height = "h-4", 
-  width = "w-full" 
+export const Shimmer: React.FC<ShimmerProps> = ({
+  className = "",
+  height = "h-4",
+  width = "w-full"
 }) => {
+  const { secondaryColor, backgroundColor } = useWhiteLabelColors();
+
   return (
-    <div 
-      className={`${width} ${height} bg-gray-200 rounded ${className}`}
+    <div
+      className={`${width} ${height} rounded ${className}`}
       style={{
-        background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+        background: `linear-gradient(90deg, ${backgroundColor}40 25%, ${secondaryColor}20 50%, ${backgroundColor}40 75%)`,
         backgroundSize: '200% 100%',
         animation: 'shimmer 1.5s infinite'
       }}
@@ -24,8 +27,13 @@ export const Shimmer: React.FC<ShimmerProps> = ({
 };
 
 export const ShimmerHomeScreen: React.FC = () => {
+  const { backgroundColor } = useWhiteLabelColors();
+
   return (
-    <div className="w-full h-full min-h-screen bg-white overflow-y-auto">
+    <div
+      className="w-full h-full min-h-screen overflow-y-auto"
+      style={{ backgroundColor }}
+    >
       <div className="w-full min-h-full p-4">
         {/* Header Shimmer */}
         <div className="flex items-center justify-between mb-4">
@@ -42,7 +50,10 @@ export const ShimmerHomeScreen: React.FC = () => {
         </div>
 
         {/* Banner Shimmer */}
-        <div className="w-screen -mx-4 mb-4 rounded-lg bg-gray-100">
+        <div
+          className="w-screen -mx-4 mb-4 rounded-lg"
+          style={{ backgroundColor: `${backgroundColor}40` }}
+        >
           <div className="flex gap-3 overflow-x-auto pb-4 pt-4 pl-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex-shrink-0">
@@ -69,7 +80,11 @@ export const ShimmerHomeScreen: React.FC = () => {
             {/* Products Shimmer */}
             <div className="flex flex-col gap-4">
               {[1, 2, 3].map((productIndex) => (
-                <div key={productIndex} className="w-full h-36 rounded-xl bg-white flex gap-6">
+                <div
+                  key={productIndex}
+                  className="w-full h-36 rounded-xl flex gap-6"
+                  style={{ backgroundColor }}
+                >
                   <Shimmer className="w-24 h-24 rounded-xl" />
                   <div className="flex-1 p-4 flex flex-col gap-2">
                     <Shimmer className="w-3/4 h-4" />
@@ -85,7 +100,7 @@ export const ShimmerHomeScreen: React.FC = () => {
             </div>
           </div>
         ))}
-             </div>
-     </div>
-   );
- };
+      </div>
+    </div>
+  );
+};

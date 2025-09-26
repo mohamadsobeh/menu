@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWhiteLabelColors } from '../../providers/white-label-provider';
 
 interface AddToCartBarProps {
   onAddToCart: (e: React.MouseEvent) => void;
@@ -17,30 +18,69 @@ export const AddToCartBar: React.FC<AddToCartBarProps> = ({
   priceCurrency = 'ل.س',
   buttonText = 'اضف'
 }) => {
+  const { primaryColor, secondaryColor, textColor, backgroundColor } = useWhiteLabelColors();
   return (
-    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3">
+    <div
+      className="absolute bottom-0 left-0 right-0 px-4 py-3"
+      style={{
+        backgroundColor: backgroundColor,
+        borderTop: `1px solid ${secondaryColor}40` // 40% opacity
+      }}
+    >
       <div className="flex items-center gap-4">
         {/* Add to Cart Button */}
         <button
           onClick={onAddToCart}
-          className="w-3/5 bg-emerald-600 text-white rounded-full py-3 flex flex-col items-center justify-center"
+          className="w-3/5 text-white rounded-full py-3 flex flex-col items-center justify-center"
+          style={{ backgroundColor: primaryColor }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = secondaryColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = primaryColor;
+          }}
         >
           <span className="text-sm font-semibold arabic-text">{buttonText}</span>
           <span className="text-xs arabic-text">{price ? (price * quantity).toLocaleString() : 0} {priceCurrency}</span>
         </button>
 
         {/* Quantity Selector */}
-        <div className="w-2/5 bg-white rounded-full py-2 border border-gray-300 flex items-center justify-center space-x-4">
+        <div
+          className="w-2/5 rounded-full py-2 flex items-center justify-center space-x-4"
+          style={{
+            backgroundColor: backgroundColor,
+            border: `1px solid ${secondaryColor}60` // 60% opacity
+          }}
+        >
           <button
             onClick={() => onQuantityChange(false)}
-            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+            className="text-2xl font-bold"
+            style={{ color: secondaryColor }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = textColor;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = secondaryColor;
+            }}
           >
             -
           </button>
-          <span className="text-black font-semibold text-lg">{quantity}</span>
+          <span
+            className="font-semibold text-lg"
+            style={{ color: textColor }}
+          >
+            {quantity}
+          </span>
           <button
             onClick={() => onQuantityChange(true)}
-            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+            className="text-2xl font-bold"
+            style={{ color: secondaryColor }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = textColor;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = secondaryColor;
+            }}
           >
             +
           </button>

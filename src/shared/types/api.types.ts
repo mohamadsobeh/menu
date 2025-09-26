@@ -14,19 +14,12 @@ export interface Banner {
 // Offer type
 export interface Offer {
   id: number;
-  user_id: string;
   title: string;
   description: string;
   image_url: string;
   price_syp: number;
   price_usd: number;
   is_recommended: boolean;
-  created_at: string;
-  updated_at: string;
-  offer_products: Array<{
-    product: Product;
-  }>;
-  featured_products: Product[];
 }
 
 // Product image type
@@ -122,6 +115,7 @@ export interface WhiteLabelConfig {
   logoUrl: string;
   primaryColor: string;
   secondaryColor: string;
+  backgroundColor: string;
   fontFamily: string;
   textColor: string;
   isActive: boolean;
@@ -164,7 +158,6 @@ export interface PaginatedResponse<T> {
 export interface HomeScreenResponse {
   featured_products: never[];
   banners: Banner[];
-  offers: Offer[];
   categories: Category[];
   label: WhiteLabelConfig;
 }
