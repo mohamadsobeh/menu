@@ -28,6 +28,17 @@ export const OfferCarouselComponent: React.FC<OfferCarouselComponentProps> = ({
 
     return () => clearTimeout(timer);
   }, []);
+ 
+React.useEffect(() => {
+  const interval = setInterval(() => {
+    setTopOfferIndex(prevIndex =>
+      prevIndex === offers.length - 1 ? 0 : prevIndex + 1
+    );
+  }, 5000); 
+
+  return () => clearInterval(interval); 
+}, [offers.length]);
+
 
   const handleOfferClick = (offer: Offer) => {
     if (onOfferClick) {

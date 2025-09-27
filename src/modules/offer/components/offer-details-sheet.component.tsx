@@ -19,7 +19,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
   onClose
 }) => {
   const { addItem, addFlyingAnimation } = useCart();
-  const { textColor, backgroundColor } = useWhiteLabelColors();
+  const { textColor, backgroundColor, primaryColor } = useWhiteLabelColors(); // ✅ أضفنا primaryColor
   const sheetRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
@@ -27,6 +27,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
   const [isClosing, setIsClosing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [toastMessage, setToastMessage] = useState<string | null>(null); // ✅ جديد
 
   // Colors are now extracted from global context
 
@@ -138,6 +139,10 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
         type: 'offer',
         quantity: quantity
       });
+
+      // ✅ Toast message عند الإضافة
+      setToastMessage("✅ تمت إضافة العرض إلى السلة");
+      setTimeout(() => setToastMessage(null), 2000);
     }, 100);
   };
 
@@ -189,6 +194,16 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
 
   return (
     <>
+      {/* ✅ Toast Message */}
+      {toastMessage && (
+        <div
+          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-full shadow-lg z-[100] arabic-text text-sm"
+          style={{ backgroundColor: primaryColor }}
+        >
+          {toastMessage}
+        </div>
+      )}
+
       {/* Backdrop */}
       {isVisible && !isClosing && (
         <div
