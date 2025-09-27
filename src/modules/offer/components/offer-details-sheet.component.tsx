@@ -34,7 +34,6 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
   // Fetch offer details from API
   const {
     data: offerDetailsData,
-    isLoading: isOfferDetailsLoading,
   } = useOfferDetails(offer?.id || null, isOpen);
 
   // Use API data if available, otherwise fallback to props
@@ -159,39 +158,6 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
   const borderRadius = isClosing ? '0' : '24px 24px 0 0';
   const willChange = isDragging ? 'transform' : 'auto';
 
-  // Show loading state if fetching offer details
-  if (isOfferDetailsLoading) {
-    return (
-      <>
-        {/* Backdrop */}
-        {isVisible && !isClosing && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-40"
-            onClick={handleClose}
-          />
-        )}
-
-        {/* Loading Sheet */}
-        <div
-          ref={sheetRef}
-          className={`fixed bottom-0 left-0 right-0 top-0 z-50 transition-all duration-300 ease-out ${isVisible ? 'translate-y-0' : 'translate-y-full'
-            }`}
-          style={{ transform, willChange }}
-        >
-          <div
-            className="w-full h-full shadow-2xl rounded-t-3xl flex items-center justify-center"
-            style={{ backgroundColor: backgroundColor, borderRadius, color: textColor }}
-          >
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto mb-4"></div>
-              <p className="text-gray-700 arabic-text">جاري تحميل تفاصيل العرض...</p>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       {/* ✅ Toast Message */}
@@ -283,7 +249,7 @@ export const OfferDetailsSheet: React.FC<OfferDetailsSheetProps> = ({
                     {/* Featured Products */}
                     <div className="mt-8 -mr-15">
                       <h3 className="text-lg font-semibold mb-4 arabic-text text-left" style={{ color: textColor }}>
-                        المنتجات المميزة
+                      الأطباق المختارة
                       </h3>
                       <div className="flex flex-col -space-y-10">
                         {displayFeaturedProducts.map(product => (

@@ -1,5 +1,5 @@
 // @ts-ignore: Import type may not be found in some environments
-import type { Offer } from "../../shared/types";
+import type { Offer, Product } from "../../shared/types";
 // 🔄 Mapper: يحول الـ API response (camelCase) إلى الشكل المتوقع بالـ frontend (snake_case)
 export function mapOffer(apiOffer: any): Offer {
     return {
@@ -14,18 +14,19 @@ export function mapOffer(apiOffer: any): Offer {
         createdAt: apiOffer.createdAt,
         updatedAt: apiOffer.updatedAt,
 
-        // 🔗 إذا في products جوا offer
-        products: apiOffer.products?.map((p: any) => ({
-            id: p.id,
-            name: p.name,
-            description: p.description,
-            images: p.images,
-            price_syp: Number(p.priceSyp ?? p.price_syp ?? 0),
-            price_usd: Number(p.priceUsd ?? p.price_usd ?? 0),
-            isFav: p.isFav ?? p.is_fav ?? false,
-            categoryId: p.categoryId,
-            restaurantId: p.restaurantId,
-        })),
+        // 🔗 Restaurant information
+        restaurant: apiOffer.restaurant ? {
+            id: apiOffer.restaurant.id,
+            name: apiOffer.restaurant.name,
+            type: apiOffer.restaurant.type,
+            subscriptionTier: apiOffer.restaurant.subscriptionTier,
+            subscriptionActiveUntil: apiOffer.restaurant.subscriptionActiveUntil,
+            createdAt: apiOffer.restaurant.createdAt,
+            updatedAt: apiOffer.restaurant.updatedAt,
+        } : undefined,
+
+        // 🔗 Products from the offer
+        products: apiOffer.products?.map((p: any) => mapProduct(p)) || [],
     } as Offer;
 }
 
@@ -35,7 +36,7 @@ export function mapOffers(apiOffers: any[]): Offer[] {
 }
 
 // 🔄 Mapper للـ Product
-export function mapProduct(apiProduct: any): any {
+export function mapProduct(apiProduct: any): Product {
     return {
         id: apiProduct.id,
         name: apiProduct.name,
@@ -52,7 +53,12 @@ export function mapProduct(apiProduct: any): any {
         createdById: apiProduct.createdById,
         createdAt: apiProduct.createdAt,
         updatedAt: apiProduct.updatedAt,
-    };
+        // Additional fields that might be needed
+        additions: apiProduct.additions || [],
+        category: apiProduct.category,
+        restaurant: apiProduct.restaurant,
+        createdBy: apiProduct.createdBy,
+    } as Product;
 }
 
 // 🔄 Mapper للـ products array

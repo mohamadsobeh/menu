@@ -20,6 +20,19 @@ export interface Offer {
   price_syp: number;
   price_usd: number;
   is_recommended: boolean;
+  restaurantId: number;
+  createdAt: string;
+  updatedAt: string;
+  restaurant?: {
+    id: number;
+    name: string;
+    type: string;
+    subscriptionTier?: string | null;
+    subscriptionActiveUntil?: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
+  products?: Product[];
 }
 
 // Product image type
