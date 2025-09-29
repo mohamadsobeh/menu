@@ -174,7 +174,7 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
         onMouseLeave={handleTouchEnd}
       >
         <div
-          className="w-full h-full shadow-2xl rounded-t-3xl flex flex-col"
+          className="w-full h-full max-w-md mx-auto shadow-2xl rounded-t-3xl flex flex-col"
           style={{ backgroundColor: backgroundColor, borderRadius }}
         >
           {/* Image */}
@@ -213,12 +213,8 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
 
           {/* Product Details with scroll */}
           <div
-            className="flex-1 overflow-y-auto scrollable-content"
+            className="flex-1 overflow-y-auto scrollable-content px-4 py-6"
             style={{
-              width: "428px",
-              height: "841px",
-              padding: "24px 18px",
-              gap: "8px",
               backgroundColor: backgroundColor,
               borderBottomLeftRadius: "16px",
               borderBottomRightRadius: "16px"
@@ -226,89 +222,66 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
           >
             {/* الاسم */}
             <div
-  className="font-medium arabic-text mb-4"
-  style={{
-    color: textColor,
-    fontSize: "20px",
-    lineHeight: "100%",
-    letterSpacing: "-0.04em",
-    textAlign: "right",
-    width: "391px",
-    height: "24px"
-  }}
->
-  {product.name}
-</div>
-
+              className="font-medium arabic-text mb-4 text-right text-lg sm:text-xl w-full"
+              style={{
+                color: textColor,
+                lineHeight: "100%",
+                letterSpacing: "-0.04em",
+              }}
+            >
+              {product.name}
+            </div>
 
             {/* السعر + السعرات */}
-           {/* ✅ القسم تبع السعر + السعرات الحرارية */}
-<div className="flex justify-between items-center mb-2 w-full">
-  {/* السعر */}
-  <div
-    className="arabic-text font-semibold"
-    style={{
-      fontSize: "24px",         // الحجم حسب Figma
-      color: primaryColor,      // ياخد اللون من الربط
-      lineHeight: "100%"
-    }}
-  >
-    {product.priceSyp
-      ? `${formatSYPPrice(parseFloat(product.priceSyp))}`
-      : "غير محدد"}
-  </div>
+            <div className="flex justify-between items-center mb-2 w-full">
+              <div
+                className="arabic-text font-semibold text-2xl"
+                style={{ color: primaryColor }}
+              >
+                {product.priceSyp
+                  ? `${formatSYPPrice(parseFloat(product.priceSyp))}`
+                  : "غير محدد"}
+              </div>
 
-  {/* السعرات الحرارية */}
-  {product.calories && (
-    <div className="flex items-center gap-1">
-      <span
-        className="arabic-text"
-        style={{
-          fontSize: "14px",       // الحجم أصغر
-          color: accentColor,     // ياخد اللون من الربط
-          lineHeight: "100%"
-        }}
-      >
-        {product.calories} سعرة
-      </span>
-      <svg
-        className="w-4 h-4"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        style={{ color: accentColor }}  // ياخد اللون من الربط
-      >
-        <path d="M12 2C8.5 2 6 4.5 6 8c0 3.5 6 12 6 12s6-8.5 6-12c0-3.5-2.5-6-6-6z" />
-      </svg>
-    </div>
-  )}
-</div>
+              {product.calories && (
+                <div className="flex items-center gap-1">
+                  <span
+                    className="arabic-text text-sm"
+                    style={{ color: accentColor }}
+                  >
+                    {product.calories} سعرة
+                  </span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    style={{ color: accentColor }}
+                  >
+                    <path d="M12 2C8.5 2 6 4.5 6 8c0 3.5 6 12 6 12s6-8.5 6-12c0-3.5-2.5-6-6-6z" />
+                  </svg>
+                </div>
+              )}
+            </div>
 
-
-           {/* الوصف */}
-           <div className="mt-8">
-  <h3
-    className="font-medium arabic-text text-[16px] leading-[100%] mb-4"
-    style={{ color: textColor, textAlign: "right" }}
-  >
-    الوصف
-  </h3>
-
-  <p
-    className="arabic-text text-[14px] leading-[170%] font-normal mb-4"
-    style={{ color: secondaryColor, textAlign: "right" }}
-  >
-    {product.description || "لا يوجد وصف متاح لهذا المنتج"}
-  </p>
-
-  {/* ✅ الخط الفاصل */}
-  <div
-    className="w-full mb-4"
-    style={{
-      borderBottom: `1px solid ${secondaryColor}40` // اللون حسب الربط مع شفافية
-    }}
-  />
-</div>
-
+            {/* الوصف */}
+            <div className="mt-8">
+              <h3
+                className="font-medium arabic-text text-base mb-4 text-right"
+                style={{ color: textColor }}
+              >
+                الوصف
+              </h3>
+              <p
+                className="arabic-text text-sm leading-7 font-normal mb-4 text-right"
+                style={{ color: secondaryColor }}
+              >
+                {product.description || "لا يوجد وصف متاح لهذا المنتج"}
+              </p>
+              <div
+                className="w-full mb-4"
+                style={{ borderBottom: `1px solid ${secondaryColor}40` }}
+              />
+            </div>
 
             {/* المكونات */}
             {product.ingredients && product.ingredients.length > 0 && (
@@ -331,20 +304,12 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
                 {isIngredientsOpen && (
-                  <div
-                    className="mt-3 p-3 rounded-lg"
-                    style={{ backgroundColor: backgroundColor }}
-                  >
+                  <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: backgroundColor }}>
                     <ul className="space-y-2">
                       {product.ingredients.map((ingredient, idx) => (
                         <li
@@ -352,10 +317,7 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                           className="arabic-text text-sm flex items-center gap-2"
                           style={{ color: secondaryColor }}
                         >
-                          <span
-                            className="w-2 h-2 rounded-full"
-                            style={{ backgroundColor: primaryColor }}
-                          ></span>
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor }}></span>
                           {ingredient}
                         </li>
                       ))}
@@ -376,10 +338,7 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                 </h3>
                 <div className="space-y-3">
                   {product.additions.map(addition => (
-                    <div
-                      key={addition.id}
-                      className="flex items-center justify-between py-2"
-                    >
+                    <div key={addition.id} className="flex items-center justify-between py-2">
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => {
@@ -396,20 +355,12 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                           disabled={!addition.isAvailable}
                           className="w-5 h-5 border-2 rounded flex items-center justify-center transition-colors"
                           style={{
-                            backgroundColor: selectedAdditions.has(addition.id.toString())
-                              ? primaryColor
-                              : 'transparent',
-                            borderColor: selectedAdditions.has(addition.id.toString())
-                              ? primaryColor
-                              : textColor
+                            backgroundColor: selectedAdditions.has(addition.id.toString()) ? primaryColor : 'transparent',
+                            borderColor: selectedAdditions.has(addition.id.toString()) ? primaryColor : textColor
                           }}
                         >
                           {selectedAdditions.has(addition.id.toString()) && (
-                            <svg
-                              className="w-3 h-3 text-white"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
+                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path
                                 fillRule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -418,17 +369,11 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                             </svg>
                           )}
                         </button>
-                        <span
-                          className="arabic-text text-sm"
-                          style={{ color: textColor }}
-                        >
+                        <span className="arabic-text text-sm" style={{ color: textColor }}>
                           {addition.name}
                         </span>
                       </div>
-                      <span
-                        className="arabic-text text-sm"
-                        style={{ color: secondaryColor }}
-                      >
+                      <span className="arabic-text text-sm" style={{ color: secondaryColor }}>
                         + {formatSYPPrice(parseFloat(addition.priceSyp))}
                       </span>
                     </div>
@@ -438,15 +383,10 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
             )}
           </div>
 
-          {/* Bottom Bar ثابت */}
+          {/* Bottom Bar */}
           <div
-            style={{
-              width: "428px",
-              height: "114px",
-              padding: "21px 23px",
-              backgroundColor: backgroundColor,
-              borderTop: `1px solid #EEEFF1`
-            }}
+            className="w-full min-h-[100px] px-6 py-4"
+            style={{ backgroundColor: backgroundColor, borderTop: `1px solid #EEEFF1` }}
           >
             <div className="flex items-center gap-4">
               <button
@@ -455,11 +395,10 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                 className="w-3/5 text-white rounded-full py-4 flex flex-col items-center justify-center disabled:cursor-not-allowed"
                 style={{
                   backgroundColor: product.isAvailable ? primaryColor : textColor,
-                  borderRadius: "50px",     // نفس شكل الزر الدائري
-                  height: "72px",           // ارتفاع الزر مثل Figma
-                  padding: "21px 76px",     // مساحة داخلية
-                  gap: "6px",               // مسافة بين النصوص
-                  boxShadow: "0px 4px 8px rgba(0,0,0,0.03)", // ظل خفيف
+                  borderRadius: "50px",
+                  height: "72px",
+                  gap: "6px",
+                  boxShadow: "0px 4px 8px rgba(0,0,0,0.03)",
                 }}
               >
                 <span className="text-sm font-semibold arabic-text">
@@ -472,8 +411,7 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
                         selectedAdditions.has(addition.id.toString())
                       ) || [];
                     const additionsPrice = selectedAdditionsList.reduce(
-                      (total, addition) =>
-                        total + parseFloat(addition.priceSyp),
+                      (total, addition) => total + parseFloat(addition.priceSyp),
                       0
                     );
                     return (
@@ -486,39 +424,27 @@ export const ProductDetailsSheet: React.FC<ProductDetailsSheetProps> = ({
               </button>
 
               <div
-  className="w-2/5 rounded-full py-3 flex items-center justify-center gap-6"
-  style={{
-    backgroundColor: backgroundColor,
-    border: `2px solid ${secondaryColor}60`, // حسب الصورة 2px
-  }}
->
-  {/* زر + */}
-  <button
-    onClick={() => handleQuantityChange(true)}
-    className="text-3xl font-bold"
-    style={{ color: secondaryColor }}
-  >
-    +
-  </button>
-
-  {/* العدد */}
-  <span
-    className="font-semibold text-lg arabic-text"
-    style={{ color: textColor }}
-  >
-    {quantity}
-  </span>
-
-  {/* زر - */}
-  <button
-    onClick={() => handleQuantityChange(false)}
-    className="text-3xl font-bold"
-    style={{ color: secondaryColor }}
-  >
-    -
-  </button>
-</div>
-
+                className="w-2/5 rounded-full py-3 flex items-center justify-center gap-6"
+                style={{ backgroundColor: backgroundColor, border: `2px solid ${secondaryColor}60` }}
+              >
+                <button
+                  onClick={() => handleQuantityChange(true)}
+                  className="text-3xl font-bold"
+                  style={{ color: secondaryColor }}
+                >
+                  +
+                </button>
+                <span className="font-semibold text-lg arabic-text" style={{ color: textColor }}>
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => handleQuantityChange(false)}
+                  className="text-3xl font-bold"
+                  style={{ color: secondaryColor }}
+                >
+                  -
+                </button>
+              </div>
             </div>
           </div>
         </div>
