@@ -28,16 +28,16 @@ export const OfferCarouselComponent: React.FC<OfferCarouselComponentProps> = ({
 
     return () => clearTimeout(timer);
   }, []);
- 
-React.useEffect(() => {
-  const interval = setInterval(() => {
-    setTopOfferIndex(prevIndex =>
-      prevIndex === offers.length - 1 ? 0 : prevIndex + 1
-    );
-  }, 5000); 
 
-  return () => clearInterval(interval); 
-}, [offers.length]);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTopOfferIndex(prevIndex =>
+        prevIndex === offers.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [offers.length]);
 
 
   const handleOfferClick = (offer: Offer) => {
@@ -214,7 +214,7 @@ React.useEffect(() => {
                     className="absolute bottom-0 left-0 px-5 rounded-bl-xl"
                     style={{ backgroundColor: accentColor }}
                   >
-                    <span className="text-black text-xs font-semibold arabic-text">
+                    <span className="text-xs font-semibold arabic-text" style={{ color: textColor }}>
                       موصى بها
                     </span>
                   </div>
@@ -238,18 +238,22 @@ React.useEffect(() => {
                     {/* Add button */}
                     <div
                       className="absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-md cursor-pointer transition-colors duration-200"
-                      style={{ backgroundColor: backgroundColor }}
+                      style={{ backgroundColor: primaryColor }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = `${secondaryColor}20`;
+                        if (secondaryColor) {
+                          e.currentTarget.style.backgroundColor = secondaryColor;
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = backgroundColor;
+                        if (primaryColor) {
+                          e.currentTarget.style.backgroundColor = primaryColor;
+                        }
                       }}
-                      onClick={(e) => handleAddToCart(e, offer)}
+                      onClick={(e: React.MouseEvent<Element, MouseEvent>) => handleAddToCart(e, offer)}
                     >
                       <div className="relative w-3 h-3">
-                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-black transform -translate-y-1/2"></div>
-                        <div className="absolute left-1/2 top-0 w-0.5 h-full bg-black transform -translate-x-1/2"></div>
+                        <div className="absolute top-1/2 left-0 w-full h-0.5 transform -translate-y-1/2" style={{ backgroundColor: textColor }}></div>
+                        <div className="absolute left-1/2 top-0 w-0.5 h-full transform -translate-x-1/2" style={{ backgroundColor: textColor }}></div>
                       </div>
                     </div>
                   </div>

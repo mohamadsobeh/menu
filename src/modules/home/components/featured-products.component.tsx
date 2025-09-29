@@ -60,13 +60,13 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
       <div className="flex items-center justify-between mb-4">
         <h2
           className="text-lg font-bold arabic-text"
-          style={{ color: whiteLabelConfig?.textColor || '#333' }}
+          style={{ color: whiteLabelConfig?.textColor }}
         >
           المنتجات المميزة
         </h2>
         <div
           className="w-2 h-2 rounded-full"
-          style={{ backgroundColor: whiteLabelConfig?.primaryColor || '#50BF63' }}
+          style={{ backgroundColor: whiteLabelConfig?.primaryColor }}
         ></div>
       </div>
 
@@ -76,7 +76,7 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
           <div
             key={product.id}
             className="rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow duration-300"
-            style={{ backgroundColor: whiteLabelConfig?.cardBgColor || '#fff' }}
+            style={{ backgroundColor: whiteLabelConfig?.secondaryColor }}
             onClick={() => handleProductClick(product)}
           >
             {/* Product Image */}
@@ -91,18 +91,28 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
               <button
                 className="absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-colors duration-200"
                 style={{
-                  backgroundColor: whiteLabelConfig?.secondaryColor || '#fff'
+                  backgroundColor: whiteLabelConfig?.primaryColor
+                }}
+                onMouseEnter={(e) => {
+                  if (whiteLabelConfig?.secondaryColor) {
+                    e.currentTarget.style.backgroundColor = whiteLabelConfig.secondaryColor;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (whiteLabelConfig?.primaryColor) {
+                    e.currentTarget.style.backgroundColor = whiteLabelConfig.primaryColor;
+                  }
                 }}
                 onClick={(e) => handleAddToCart(e, product)}
               >
                 <div className="relative w-4 h-4">
                   <div
                     className="absolute top-1/2 left-0 w-full h-0.5 transform -translate-y-1/2"
-                    style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                    style={{ backgroundColor: whiteLabelConfig?.textColor }}
                   ></div>
                   <div
                     className="absolute left-1/2 top-0 w-0.5 h-full transform -translate-x-1/2"
-                    style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                    style={{ backgroundColor: whiteLabelConfig?.textColor }}
                   ></div>
                 </div>
               </button>
@@ -112,14 +122,14 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
             <div className="p-3">
               <h3
                 className="text-sm font-semibold mb-1 arabic-text line-clamp-1"
-                style={{ color: whiteLabelConfig?.textColor || '#333' }}
+                style={{ color: whiteLabelConfig?.textColor }}
               >
                 {product.title}
               </h3>
               {product.description && (
                 <p
                   className="text-xs mb-2 arabic-text line-clamp-2"
-                  style={{ color: whiteLabelConfig?.secondaryColor || '#666' }}
+                  style={{ color: whiteLabelConfig?.secondaryColor }}
                 >
                   {product.description}
                 </p>
@@ -129,7 +139,7 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
                   {product.price_usd && product.price_usd > 0 && (
                     <span
                       className="text-xs"
-                      style={{ color: whiteLabelConfig?.secondaryColor || '#999' }}
+                      style={{ color: whiteLabelConfig?.secondaryColor }}
                     >
                       ${product.price_usd}
                     </span>
@@ -137,7 +147,7 @@ export const FeaturedProductsComponent: React.FC<FeaturedProductsComponentProps>
                   {product.price_syp && product.price_syp > 0 && (
                     <span
                       className="text-sm font-bold arabic-text"
-                      style={{ color: whiteLabelConfig?.primaryColor || '#50BF63' }}
+                      style={{ color: whiteLabelConfig?.primaryColor }}
                     >
                       {formatSYPPrice(product.price_syp)}
                     </span>

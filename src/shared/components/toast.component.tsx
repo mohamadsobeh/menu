@@ -33,11 +33,11 @@ export const Toast: React.FC<ToastProps> = ({
   const getToastStyles = () => {
     switch (type) {
       case 'error':
-        return { backgroundColor: '#ef4444', color: '#ffffff' }; // red-500
+        return { backgroundColor: '#ef4444', color: textColor }; // Keep red for error
       case 'success':
-        return { backgroundColor: primaryColor, color: '#ffffff' };
+        return { backgroundColor: primaryColor, color: textColor };
       case 'warning':
-        return { backgroundColor: accentColor, color: '#000000' };
+        return { backgroundColor: accentColor, color: textColor };
       default:
         return { backgroundColor: secondaryColor, color: textColor };
     }

@@ -93,10 +93,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             className="ml-4 p-2 rounded-full transition-colors duration-200 flex-shrink-0"
             style={{ backgroundColor: primaryColor }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = secondaryColor;
+              if (secondaryColor) {
+                e.currentTarget.style.backgroundColor = secondaryColor;
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = primaryColor;
+              if (primaryColor) {
+                e.currentTarget.style.backgroundColor = primaryColor;
+              }
             }}
           >
             <svg
@@ -129,7 +133,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               backgroundColor: `${backgroundColor}20`, // 20% opacity
               color: textColor,
               '--placeholder-color': secondaryColor
-            } as React.CSSProperties}
+            } as React.CSSProperties & { '--placeholder-color': string }}
             dir="rtl"
           />
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -156,10 +160,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors duration-200"
               style={{ color: secondaryColor }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = textColor;
+                if (textColor) {
+                  e.currentTarget.style.color = textColor;
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = secondaryColor;
+                if (secondaryColor) {
+                  e.currentTarget.style.color = secondaryColor;
+                }
               }}
             >
               <svg

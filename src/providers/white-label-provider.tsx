@@ -28,7 +28,7 @@ export const WhiteLabelProvider: React.FC<WhiteLabelProviderProps> = ({ children
             root.style.setProperty('--accent-color', whiteLabelConfig.accentColor);
             root.style.setProperty('--font-family', whiteLabelConfig.fontFamily);
 
-            // Apply global background
+            // Apply global background and font
             document.body.style.backgroundColor = whiteLabelConfig.backgroundColor;
             document.body.style.fontFamily = whiteLabelConfig.fontFamily;
         }
@@ -49,16 +49,16 @@ export const useWhiteLabel = (): WhiteLabelContextType => {
     return context;
 };
 
-// Helper hook to get colors with fallbacks
+// Helper hook to get colors from API only (no fallbacks)
 export const useWhiteLabelColors = () => {
     const { whiteLabelConfig } = useWhiteLabel();
 
     return {
-        primaryColor: whiteLabelConfig?.primaryColor || '#50BF63',
-        secondaryColor: whiteLabelConfig?.secondaryColor || '#DAA520',
-        backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC',
-        textColor: whiteLabelConfig?.textColor || '#FFFFFF',
-        accentColor: whiteLabelConfig?.accentColor || '#FFD700',
-        fontFamily: whiteLabelConfig?.fontFamily || 'Georgia, serif',
+        primaryColor: whiteLabelConfig?.primaryColor,
+        secondaryColor: whiteLabelConfig?.secondaryColor,
+        backgroundColor: whiteLabelConfig?.backgroundColor,
+        textColor: whiteLabelConfig?.textColor,
+        accentColor: whiteLabelConfig?.accentColor,
+        fontFamily: whiteLabelConfig?.fontFamily,
     };
 };

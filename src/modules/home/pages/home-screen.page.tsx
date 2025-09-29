@@ -267,7 +267,18 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
         <div className="text-red-600 text-lg mb-4 arabic-text">خطأ: {errorMessage}</div>
         <button
           onClick={() => refetch()}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 arabic-text"
+          className="px-4 py-2 text-white rounded arabic-text"
+          style={{ backgroundColor: whiteLabelConfig?.primaryColor }}
+          onMouseEnter={(e) => {
+            if (whiteLabelConfig?.accentColor) {
+              e.currentTarget.style.backgroundColor = whiteLabelConfig.accentColor;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (whiteLabelConfig?.primaryColor) {
+              e.currentTarget.style.backgroundColor = whiteLabelConfig.primaryColor;
+            }
+          }}
         >
           إعادة المحاولة
         </button>
@@ -279,11 +290,11 @@ export const HomeScreenPage: React.FC<HomeScreenPageProps> = ({ restaurantId }) 
     <div
       ref={setMainContainerRef}
       className="w-full h-full min-h-screen overflow-y-auto"
-      style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+      style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
     >
       {/* Background refresh indicator */}
       {isFetching && (
-        <div className="fixed top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded text-sm z-50 arabic-text">
+        <div className="fixed top-4 left-4 px-3 py-1 rounded text-sm z-50 arabic-text text-white" style={{ backgroundColor: whiteLabelConfig?.primaryColor }}>
           جاري التحديث...
         </div>
       )}

@@ -89,7 +89,7 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
           <div className="text-lg mb-2 arabic-text" style={{ color: textColor }}>
             لا توجد عروض مُوصى بها حالياً
           </div>
-          <div className="text-sm arabic-text" style={{ color: '#9ca3af' }}>
+          <div className="text-sm arabic-text" style={{ color: textColor }}>
             تحقق مرة أخرى لاحقاً للعروض الجديدة
           </div>
         </div>
@@ -119,7 +119,7 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
               <div className="absolute top-3 right-3">
                 <span
                   className="inline-block px-2 py-1 rounded text-xs font-bold arabic-text"
-                  style={{ backgroundColor: accentColor, color: '#000' }}
+                  style={{ backgroundColor: accentColor, color: textColor }}
                 >
                   مُوصى به
                 </span>
@@ -137,7 +137,7 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
 
               <p
                 className="text-sm mb-3 arabic-text line-clamp-2"
-                style={{ color: '#6b7280' }}
+                style={{ color: textColor }}
               >
                 {offer.description || 'لا يوجد وصف لهذا العرض'}
               </p>
@@ -167,14 +167,17 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
                 className="w-full py-2 px-4 rounded-lg font-medium arabic-text transition-colors duration-200"
                 style={{
                   backgroundColor: primaryColor,
-                  color: '#fff',
-
+                  color: textColor,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = accentColor;
+                  if (accentColor) {
+                    e.currentTarget.style.backgroundColor = accentColor;
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = primaryColor;
+                  if (primaryColor) {
+                    e.currentTarget.style.backgroundColor = primaryColor;
+                  }
                 }}
               >
                 أضف إلى السلة
@@ -191,8 +194,20 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
           <button
             onClick={() => handlePageChange(pagination.page - 1)}
             disabled={!pagination.hasPrev}
-            className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-200"
-            style={{ borderColor: '#d1d5db', color: textColor }}
+            className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            style={{
+              borderColor: textColor,
+              color: textColor,
+              backgroundColor: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              if (accentColor) {
+                e.currentTarget.style.backgroundColor = `${accentColor}20`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
           >
             السابق
           </button>
@@ -212,7 +227,17 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
                   className="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
                   style={{
                     backgroundColor: pageNum === pagination.page ? primaryColor : 'transparent',
-                    color: pageNum === pagination.page ? '#fff' : '#374151',
+                    color: pageNum === pagination.page ? 'white' : textColor,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (pageNum !== pagination.page && accentColor) {
+                      e.currentTarget.style.backgroundColor = `${accentColor}20`;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (pageNum !== pagination.page) {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
                   }}
                 >
                   {pageNum}
@@ -225,8 +250,20 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
           <button
             onClick={() => handlePageChange(pagination.page + 1)}
             disabled={!pagination.hasNext}
-            className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-200"
-            style={{ borderColor: '#d1d5db', color: textColor }}
+            className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            style={{
+              borderColor: textColor,
+              color: textColor,
+              backgroundColor: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              if (accentColor) {
+                e.currentTarget.style.backgroundColor = `${accentColor}20`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
           >
             التالي
           </button>
@@ -235,7 +272,7 @@ export const RecommendedOffersComponent: React.FC<RecommendedOffersComponentProp
 
       {/* Pagination Info - Only show if pagination is enabled */}
       {showPagination && (
-        <div className="text-center mt-4 text-sm arabic-text" style={{ color: '#9ca3af' }}>
+        <div className="text-center mt-4 text-sm arabic-text" style={{ color: textColor }}>
           صفحة {pagination.page} من {pagination.totalPages} • {pagination.total} عرض مُوصى به إجمالي
         </div>
       )}

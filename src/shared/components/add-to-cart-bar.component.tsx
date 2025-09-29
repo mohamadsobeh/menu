@@ -34,14 +34,20 @@ export const AddToCartBar: React.FC<AddToCartBarProps> = ({
           className="w-3/5 text-white rounded-full py-3 flex flex-col items-center justify-center"
           style={{ backgroundColor: primaryColor }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = secondaryColor;
+            if (secondaryColor) {
+              e.currentTarget.style.backgroundColor = secondaryColor;
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = primaryColor;
+            if (primaryColor) {
+              e.currentTarget.style.backgroundColor = primaryColor;
+            }
           }}
         >
           <span className="text-sm font-semibold arabic-text">{buttonText}</span>
-          <span className="text-xs arabic-text">{price ? (price * quantity).toLocaleString() : 0} {priceCurrency}</span>
+          <span className="text-xs arabic-text">
+            {price ? (price * quantity).toLocaleString() : 0} {priceCurrency}
+          </span>
         </button>
 
         {/* Quantity Selector */}
@@ -52,37 +58,50 @@ export const AddToCartBar: React.FC<AddToCartBarProps> = ({
             border: `1px solid ${secondaryColor}60` // 60% opacity
           }}
         >
+          {/* ✅ زر + يمين */}
           <button
-            onClick={() => onQuantityChange(false)}
-            className="text-2xl font-bold"
+            onClick={() => onQuantityChange(true)}
+            className="text-3xl font-bold"
             style={{ color: secondaryColor }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = textColor;
+              if (textColor) {
+                e.currentTarget.style.color = textColor;
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = secondaryColor;
+              if (secondaryColor) {
+                e.currentTarget.style.color = secondaryColor;
+              }
             }}
           >
-            -
+            +
           </button>
+
+          {/* الرقم بالنص */}
           <span
             className="font-semibold text-lg"
             style={{ color: textColor }}
           >
             {quantity}
           </span>
+
+          {/* ✅ زر - يسار */}
           <button
-            onClick={() => onQuantityChange(true)}
-            className="text-2xl font-bold"
+            onClick={() => onQuantityChange(false)}
+            className="text-3xl font-bold"
             style={{ color: secondaryColor }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = textColor;
+              if (textColor) {
+                e.currentTarget.style.color = textColor;
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = secondaryColor;
+              if (secondaryColor) {
+                e.currentTarget.style.color = secondaryColor;
+              }
             }}
           >
-            +
+            -
           </button>
         </div>
       </div>

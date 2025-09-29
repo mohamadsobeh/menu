@@ -43,7 +43,7 @@ export const ProductsByCategoryPage: React.FC<ProductsByCategoryPageProps> = ({
         return (
             <div
                 className="w-full min-h-screen p-4"
-                style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+                style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
             >
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center py-12">
@@ -62,7 +62,7 @@ export const ProductsByCategoryPage: React.FC<ProductsByCategoryPageProps> = ({
     return (
         <div
             className="w-full min-h-screen p-4"
-            style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+            style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
         >
             <div className="max-w-6xl mx-auto">
                 {/* Products Content */}

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { WhiteLabelConfig } from '../../../shared/types';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 
 interface FooterBottomSheetProps {
   isOpen: boolean;
@@ -12,14 +13,9 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
   onClose,
   whiteLabelConfig,
 }) => {
-  if (!isOpen) return null;
+  const { secondaryColor, textColor, backgroundColor, accentColor } = useWhiteLabelColors();
 
-  // 🟢 Helper function لعمل fallback
-  const getColor = (color?: string, fallback: string = '#303136') => {
-    if (!color) return fallback;
-    const normalized = color.startsWith('#') ? color.toUpperCase() : `#${color.toUpperCase()}`;
-    return normalized === '#FFFFFF' ? '#000000' : normalized; // إذا أبيض → أسود
-  };
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
@@ -32,11 +28,11 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
       {/* Bottom Sheet */}
       <div
         className="relative w-full rounded-t-2xl shadow-2xl"
-        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+        style={{ backgroundColor }}
       >
         {/* Indicator */}
         <div className="flex justify-center py-2">
-          <div className="w-[67px] h-[5px] rounded-[32px] bg-[#EEEFF1]" />
+          <div className="w-[67px] h-[5px] rounded-[32px]" style={{ backgroundColor: secondaryColor }} />
         </div>
 
         {/* Header */}
@@ -48,7 +44,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
         {/* Main Content */}
         <div className="px-6 pt-2 pb-6">
           <h4 className="text-[16px] font-bold mb-6 arabic-text text-center flex justify-center items-center"
-            style={{ color: getColor(whiteLabelConfig?.textColor) }}>
+            style={{ color: textColor }}>
             يمكنك متابعتي على
           </h4>
 
@@ -58,7 +54,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
               <div
                 className="w-6 h-6 rounded-full flex items-center justify-center ml-3"
                 style={{
-                  backgroundColor: whiteLabelConfig?.accentColor || '#50BF63',
+                  backgroundColor: accentColor,
                 }}
               >
                 <svg
@@ -77,7 +73,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
               </div>
               <span
                 className="font-medium"
-                style={{ color: getColor(whiteLabelConfig?.textColor) }}
+                style={{ color: textColor }}
               >
                 Msar.Live
               </span>
@@ -89,7 +85,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center ml-3"
                   style={{
-                    backgroundColor: whiteLabelConfig?.accentColor || '#50BF63',
+                    backgroundColor: accentColor,
                   }}
                 >
                   <svg
@@ -108,7 +104,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 </div>
                 <span
                   className="font-medium"
-                  style={{ color: getColor(whiteLabelConfig?.textColor) }}
+                  style={{ color: textColor }}
                 >
                   {whiteLabelConfig.contactPhone}
                 </span>
@@ -121,7 +117,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center ml-3"
                   style={{
-                    backgroundColor: whiteLabelConfig?.accentColor || '#50BF63',
+                    backgroundColor: accentColor,
                   }}
                 >
                   <svg
@@ -140,7 +136,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 </div>
                 <span
                   className="font-medium"
-                  style={{ color: getColor(whiteLabelConfig?.textColor) }}
+                  style={{ color: textColor }}
                 >
                   {whiteLabelConfig.contactEmail}
                 </span>
@@ -153,7 +149,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center ml-3"
                   style={{
-                    backgroundColor: whiteLabelConfig?.accentColor || '#50BF63',
+                    backgroundColor: accentColor,
                   }}
                 >
                   <svg
@@ -166,7 +162,7 @@ export const FooterBottomSheet: React.FC<FooterBottomSheetProps> = ({
                 </div>
                 <span
                   className="font-medium"
-                  style={{ color: getColor(whiteLabelConfig?.textColor) }}
+                  style={{ color: textColor }}
                 >
                   {whiteLabelConfig.instagramAccount}
                 </span>

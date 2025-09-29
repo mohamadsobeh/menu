@@ -2,6 +2,7 @@ import React from 'react';
 import type { Product } from '../../../shared/types';
 import { useCart } from '../../../shared/contexts';
 import { formatSYPPrice } from '../../../shared/utils';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 
 interface PaginatedProductsComponentProps {
     products: Product[];
@@ -27,6 +28,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
     onPageChange,
     whiteLabelConfig,
 }) => {
+    const { primaryColor, secondaryColor } = useWhiteLabelColors();
     const { addItem, addFlyingAnimation } = useCart();
 
     const handleProductClick = (product: Product) => {
@@ -73,7 +75,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
         return (
             <div className="w-full mb-8">
                 <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#50BF63]"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: primaryColor }}></div>
                 </div>
             </div>
         );
@@ -103,7 +105,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                         key={product.id}
                         className={`rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200 ${!product.isAvailable ? 'opacity-60 grayscale' : ''
                             }`}
-                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
                         onClick={() => handleProductClick(product)}
                     >
                         {/* Product Image */}
@@ -118,7 +120,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                 <div className="absolute top-3 right-3">
                                     <span
                                         className="inline-block px-2 py-1 rounded text-xs font-bold text-black arabic-text"
-                                        style={{ backgroundColor: whiteLabelConfig?.accentColor || '#FFC120' }}
+                                        style={{ backgroundColor: whiteLabelConfig?.accentColor }}
                                     >
                                         مفضلة
                                     </span>
@@ -127,7 +129,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                             {/* Availability Badge */}
                             {!product.isAvailable && (
                                 <div className="absolute top-3 left-3">
-                                    <span className="inline-block px-2 py-1 rounded text-xs font-bold text-white bg-red-500 arabic-text">
+                                    <span className="inline-block px-2 py-1 rounded text-xs font-bold text-white arabic-text" style={{ backgroundColor: whiteLabelConfig?.accentColor }}>
                                         غير متوفر
                                     </span>
                                 </div>
@@ -136,22 +138,22 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
 
                         {/* Product Content */}
                         <div className="p-4">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2 arabic-text line-clamp-2">
+                            <h3 className="text-lg font-semibold mb-2 arabic-text line-clamp-2" style={{ color: whiteLabelConfig?.textColor }}>
                                 {product.name}
                             </h3>
 
                             {product.description && (
-                                <p className="text-sm text-gray-600 mb-3 arabic-text line-clamp-2">
+                                <p className="text-sm mb-3 arabic-text line-clamp-2" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                     {product.description}
                                 </p>
                             )}
 
                             {/* Category and Restaurant */}
                             <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded arabic-text">
+                                <span className="text-xs px-2 py-1 rounded arabic-text" style={{ color: whiteLabelConfig?.secondaryColor, backgroundColor: whiteLabelConfig?.backgroundColor }}>
                                     {product.category.name}
                                 </span>
-                                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded arabic-text">
+                                <span className="text-xs px-2 py-1 rounded arabic-text" style={{ color: whiteLabelConfig?.secondaryColor, backgroundColor: whiteLabelConfig?.backgroundColor }}>
                                     {product.restaurant.name}
                                 </span>
                             </div>
@@ -159,8 +161,8 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                             {/* Calories */}
                             {product.calories && (
                                 <div className="flex items-center gap-1 mb-3">
-                                    <span className="text-xs text-red-500 arabic-text">🔥</span>
-                                    <span className="text-xs text-gray-600 arabic-text">
+                                    <span className="text-xs arabic-text" style={{ color: whiteLabelConfig?.accentColor }}>🔥</span>
+                                    <span className="text-xs arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                         {product.calories} سعرة حرارية
                                     </span>
                                 </div>
@@ -172,13 +174,13 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                     {product.priceSyp && (
                                         <span
                                             className="text-lg font-bold arabic-text"
-                                            style={{ color: whiteLabelConfig?.primaryColor || '#50BF63' }}
+                                            style={{ color: whiteLabelConfig?.primaryColor }}
                                         >
                                             {formatSYPPrice(parseFloat(product.priceSyp))}
                                         </span>
                                     )}
                                     {product.priceUsd && (
-                                        <span className="text-sm text-gray-500">
+                                        <span className="text-sm" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                             ${product.priceUsd}
                                         </span>
                                     )}
@@ -187,7 +189,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
 
                             {/* Additions Count */}
                             {product.additions && product.additions.length > 0 && (
-                                <div className="text-xs text-gray-500 mb-3 arabic-text">
+                                <div className="text-xs mb-3 arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                     {product.additions.length} إضافة متاحة
                                 </div>
                             )}
@@ -198,21 +200,22 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                 disabled={!product.isAvailable}
                                 className={`w-full py-2 px-4 rounded-lg font-medium arabic-text transition-colors duration-200 ${product.isAvailable
                                     ? 'text-white'
-                                    : 'text-gray-400 bg-gray-200 cursor-not-allowed'
+                                    : 'cursor-not-allowed'
                                     }`}
                                 style={{
                                     backgroundColor: product.isAvailable
-                                        ? (whiteLabelConfig?.primaryColor || '#50BF63')
-                                        : '#E5E7EB',
+                                        ? whiteLabelConfig?.primaryColor
+                                        : secondaryColor,
+                                    color: product.isAvailable ? 'white' : whiteLabelConfig?.textColor
                                 }}
                                 onMouseEnter={(e) => {
                                     if (product.isAvailable) {
-                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor || '#45a556';
+                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor;
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (product.isAvailable) {
-                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
+                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor;
                                     }
                                 }}
                             >
@@ -230,7 +233,20 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                     <button
                         onClick={() => handlePageChange(pagination.page - 1)}
                         disabled={!pagination.hasPrev}
-                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-200"
+                        className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                        style={{
+                            borderColor: whiteLabelConfig?.secondaryColor,
+                            color: whiteLabelConfig?.textColor,
+                            backgroundColor: 'transparent'
+                        }}
+                        onMouseEnter={(e) => {
+                            if (whiteLabelConfig?.secondaryColor) {
+                                e.currentTarget.style.backgroundColor = `${whiteLabelConfig.secondaryColor}20`;
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
                     >
                         السابق
                     </button>
@@ -249,12 +265,25 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                                     onClick={() => handlePageChange(pageNum)}
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${pageNum === pagination.page
                                         ? 'text-white'
-                                        : 'text-gray-700 hover:bg-gray-100'
+                                        : ''
                                         }`}
                                     style={{
                                         backgroundColor: pageNum === pagination.page
-                                            ? (whiteLabelConfig?.primaryColor || '#50BF63')
-                                            : 'transparent'
+                                            ? whiteLabelConfig?.primaryColor
+                                            : 'transparent',
+                                        color: pageNum === pagination.page
+                                            ? 'white'
+                                            : whiteLabelConfig?.textColor
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (pageNum !== pagination.page && whiteLabelConfig?.secondaryColor) {
+                                            e.currentTarget.style.backgroundColor = `${whiteLabelConfig.secondaryColor}20`;
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (pageNum !== pagination.page) {
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                        }
                                     }}
                                 >
                                     {pageNum}
@@ -267,7 +296,20 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
                     <button
                         onClick={() => handlePageChange(pagination.page + 1)}
                         disabled={!pagination.hasNext}
-                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-200"
+                        className="px-4 py-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                        style={{
+                            borderColor: whiteLabelConfig?.secondaryColor,
+                            color: whiteLabelConfig?.textColor,
+                            backgroundColor: 'transparent'
+                        }}
+                        onMouseEnter={(e) => {
+                            if (whiteLabelConfig?.secondaryColor) {
+                                e.currentTarget.style.backgroundColor = `${whiteLabelConfig.secondaryColor}20`;
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
                     >
                         التالي
                     </button>
@@ -275,7 +317,7 @@ export const PaginatedProductsComponent: React.FC<PaginatedProductsComponentProp
             )}
 
             {/* Pagination Info */}
-            <div className="text-center mt-4 text-sm text-gray-500 arabic-text">
+            <div className="text-center mt-4 text-sm arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                 صفحة {pagination.page} من {pagination.totalPages} • {pagination.total} منتج إجمالي
             </div>
         </div>

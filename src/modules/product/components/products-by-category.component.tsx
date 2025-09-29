@@ -2,6 +2,7 @@ import React from 'react';
 import type { Product } from '../../../shared/types';
 import { useCart } from '../../../shared/contexts';
 import { formatSYPPrice } from '../../../shared/utils';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 
 interface ProductsByCategoryComponentProps {
     products: Product[];
@@ -29,6 +30,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
     whiteLabelConfig,
     categoryName,
 }) => {
+    const { primaryColor, secondaryColor } = useWhiteLabelColors();
     const { addItem, addFlyingAnimation } = useCart();
 
     const handleProductClick = (product: Product) => {
@@ -75,7 +77,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
         return (
             <div className="w-full mb-8">
                 <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#50BF63]"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: primaryColor }}></div>
                 </div>
             </div>
         );
@@ -121,7 +123,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                         key={product.id}
                         className={`rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200 ${!product.isAvailable ? 'opacity-60 grayscale' : ''
                             }`}
-                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
                         onClick={() => handleProductClick(product)}
                     >
                         {/* Product Image */}
@@ -136,7 +138,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                                 <div className="absolute top-3 right-3">
                                     <span
                                         className="inline-block px-2 py-1 rounded text-xs font-bold text-black arabic-text"
-                                        style={{ backgroundColor: whiteLabelConfig?.accentColor || '#FFC120' }}
+                                        style={{ backgroundColor: whiteLabelConfig?.accentColor }}
                                     >
                                         مفضلة
                                     </span>
@@ -145,7 +147,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                             {/* Availability Badge */}
                             {!product.isAvailable && (
                                 <div className="absolute top-3 left-3">
-                                    <span className="inline-block px-2 py-1 rounded text-xs font-bold text-white bg-red-500 arabic-text">
+                                    <span className="inline-block px-2 py-1 rounded text-xs font-bold text-white arabic-text" style={{ backgroundColor: whiteLabelConfig?.accentColor }}>
                                         غير متوفر
                                     </span>
                                 </div>
@@ -154,19 +156,19 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
 
                         {/* Product Content */}
                         <div className="p-4">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2 arabic-text line-clamp-2">
+                            <h3 className="text-lg font-semibold mb-2 arabic-text line-clamp-2" style={{ color: whiteLabelConfig?.textColor }}>
                                 {product.name}
                             </h3>
 
                             {product.description && (
-                                <p className="text-sm text-gray-600 mb-3 arabic-text line-clamp-2">
+                                <p className="text-sm mb-3 arabic-text line-clamp-2" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                     {product.description}
                                 </p>
                             )}
 
                             {/* Restaurant */}
                             <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded arabic-text">
+                                <span className="text-xs px-2 py-1 rounded arabic-text" style={{ color: whiteLabelConfig?.secondaryColor, backgroundColor: whiteLabelConfig?.backgroundColor }}>
                                     {product.restaurant.name}
                                 </span>
                             </div>
@@ -174,8 +176,8 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                             {/* Calories */}
                             {product.calories && (
                                 <div className="flex items-center gap-1 mb-3">
-                                    <span className="text-xs text-red-500 arabic-text">🔥</span>
-                                    <span className="text-xs text-gray-600 arabic-text">
+                                    <span className="text-xs arabic-text" style={{ color: whiteLabelConfig?.accentColor }}>🔥</span>
+                                    <span className="text-xs arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                         {product.calories} سعرة حرارية
                                     </span>
                                 </div>
@@ -187,13 +189,13 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                                     {product.priceSyp && (
                                         <span
                                             className="text-lg font-bold arabic-text"
-                                            style={{ color: whiteLabelConfig?.primaryColor || '#50BF63' }}
+                                            style={{ color: whiteLabelConfig?.primaryColor }}
                                         >
                                             {formatSYPPrice(parseFloat(product.priceSyp))}
                                         </span>
                                     )}
                                     {product.priceUsd && (
-                                        <span className="text-sm text-gray-500">
+                                        <span className="text-sm" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                             ${product.priceUsd}
                                         </span>
                                     )}
@@ -202,7 +204,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
 
                             {/* Additions Count */}
                             {product.additions && product.additions.length > 0 && (
-                                <div className="text-xs text-gray-500 mb-3 arabic-text">
+                                <div className="text-xs mb-3 arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                                     {product.additions.length} إضافة متاحة
                                 </div>
                             )}
@@ -213,21 +215,22 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                                 disabled={!product.isAvailable}
                                 className={`w-full py-2 px-4 rounded-lg font-medium arabic-text transition-colors duration-200 ${product.isAvailable
                                     ? 'text-white'
-                                    : 'text-gray-400 bg-gray-200 cursor-not-allowed'
+                                    : 'cursor-not-allowed'
                                     }`}
                                 style={{
                                     backgroundColor: product.isAvailable
-                                        ? (whiteLabelConfig?.primaryColor || '#50BF63')
-                                        : '#E5E7EB',
+                                        ? whiteLabelConfig?.primaryColor
+                                        : secondaryColor,
+                                    color: product.isAvailable ? 'white' : whiteLabelConfig?.textColor
                                 }}
                                 onMouseEnter={(e) => {
                                     if (product.isAvailable) {
-                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor || '#45a556';
+                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.accentColor;
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (product.isAvailable) {
-                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor || '#50BF63';
+                                        e.currentTarget.style.backgroundColor = whiteLabelConfig?.primaryColor;
                                     }
                                 }}
                             >
@@ -268,7 +271,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
                                         }`}
                                     style={{
                                         backgroundColor: pageNum === pagination.page
-                                            ? (whiteLabelConfig?.primaryColor || '#50BF63')
+                                            ? whiteLabelConfig?.primaryColor
                                             : 'transparent'
                                     }}
                                 >
@@ -290,7 +293,7 @@ export const ProductsByCategoryComponent: React.FC<ProductsByCategoryComponentPr
             )}
 
             {/* Pagination Info */}
-            <div className="text-center mt-4 text-sm text-gray-500 arabic-text">
+            <div className="text-center mt-4 text-sm arabic-text" style={{ color: whiteLabelConfig?.secondaryColor }}>
                 صفحة {pagination.page} من {pagination.totalPages} • {pagination.total} منتج إجمالي
             </div>
         </div>

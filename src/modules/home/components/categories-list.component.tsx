@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Category, Product } from '../../../shared/types';
 import { useCart } from '../../../shared/contexts';
 import { formatSYPPrice } from '../../../shared/utils';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 
 interface CategoriesListComponentProps {
   categories: Category[];
@@ -15,6 +16,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
   onProductClick,
   whiteLabelConfig,
 }) => {
+  const { textColor, secondaryColor } = useWhiteLabelColors();
   const [collapsedCategories, setCollapsedCategories] = useState<Set<number>>(new Set());
   const { addItem, addFlyingAnimation } = useCart();
   const [animatedProducts, setAnimatedProducts] = useState<Set<number>>(new Set());
@@ -101,7 +103,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
               <h2
                 className="text-2xl font-bold arabic-text pr-4"
                 style={{
-                  color: whiteLabelConfig?.primaryColor || '#52535D'
+                  color: whiteLabelConfig?.primaryColor
                 }}
               >
                 {category.name}
@@ -110,7 +112,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                 onClick={() => toggleCategory(category.id)}
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-200"
                 style={{
-                  backgroundColor: whiteLabelConfig?.primaryColor || 'rgba(80, 191, 99, 0.9)'
+                  backgroundColor: whiteLabelConfig?.primaryColor
                 }}
               >
                 <svg
@@ -126,7 +128,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                 >
                   <path
                     d="M2 4L6 8L10 4"
-                    stroke={whiteLabelConfig?.textColor || 'white'}
+                    stroke={whiteLabelConfig?.textColor}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -154,7 +156,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                     >
                       <div
                         className="w-full h-36 rounded-xl overflow-hidden flex gap-6 relative"
-                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor || '#F5F5DC' }}
+                        style={{ backgroundColor: whiteLabelConfig?.backgroundColor }}
                       >
                         <div className="absolute bottom-0 left-4 right-4 h-px bg-gray-200"></div>
 
@@ -172,25 +174,35 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                               />
                             </div>
                             <div
-                              className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-md ${product.isAvailable
+                              className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-md transition-colors duration-200 ${product.isAvailable
                                 ? 'cursor-pointer'
                                 : 'cursor-not-allowed'
                                 }`}
                               style={{
                                 backgroundColor: product.isAvailable
-                                  ? whiteLabelConfig?.secondaryColor || '#FFFFFF'
-                                  : '#ccc'
+                                  ? whiteLabelConfig?.primaryColor
+                                  : secondaryColor
+                              }}
+                              onMouseEnter={(e) => {
+                                if (product.isAvailable && whiteLabelConfig?.secondaryColor) {
+                                  e.currentTarget.style.backgroundColor = whiteLabelConfig.secondaryColor;
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (product.isAvailable && whiteLabelConfig?.primaryColor) {
+                                  e.currentTarget.style.backgroundColor = whiteLabelConfig.primaryColor;
+                                }
                               }}
                               onClick={(e) => handleAddToCart(e, product, productImage)}
                             >
                               <div className="relative w-3 h-3">
                                 <div
                                   className="absolute top-1/2 left-0 w-full h-0.5 transform -translate-y-1/2"
-                                  style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                                  style={{ backgroundColor: whiteLabelConfig?.textColor }}
                                 ></div>
                                 <div
                                   className="absolute left-1/2 top-0 w-0.5 h-full transform -translate-x-1/2"
-                                  style={{ backgroundColor: whiteLabelConfig?.textColor || '#000' }}
+                                  style={{ backgroundColor: whiteLabelConfig?.textColor }}
                                 ></div>
                               </div>
                             </div>
@@ -202,7 +214,7 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                             <h3
                               className="text-sm font-medium mb-1 arabic-text leading-tight"
                               style={{
-                                color: '#000'
+                                color: textColor
                               }}
                             >
                               {product.name}
@@ -215,8 +227,8 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                                 }`}
                               style={{
                                 color: !product.isAvailable
-                                  ? '#9CA3AF'
-                                  : whiteLabelConfig?.secondaryColor || '#555'
+                                  ? secondaryColor
+                                  : whiteLabelConfig?.secondaryColor
                               }}
                             >
                               {product.description}
@@ -229,8 +241,8 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                                   }`}
                                 style={{
                                   color: !product.isAvailable
-                                    ? '#9CA3AF'
-                                    : whiteLabelConfig?.primaryColor || '#50BF63'
+                                    ? secondaryColor
+                                    : whiteLabelConfig?.primaryColor
                                 }}
                               >
                                 {formatSYPPrice(parseFloat(product.priceSyp))}
@@ -251,9 +263,9 @@ export const CategoriesListComponent: React.FC<CategoriesListComponentProps> = (
                                 className="inline-block px-2 py-1 rounded text-xs font-bold arabic-text"
                                 style={{
                                   backgroundColor: !product.isAvailable
-                                    ? '#ccc'
-                                    : whiteLabelConfig?.accentColor || '#FFC120',
-                                  color: whiteLabelConfig?.textColor || '#000'
+                                    ? secondaryColor
+                                    : whiteLabelConfig?.accentColor,
+                                  color: whiteLabelConfig?.textColor
                                 }}
                               >
                                 مفضلة

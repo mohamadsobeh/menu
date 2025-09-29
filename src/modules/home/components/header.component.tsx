@@ -44,18 +44,22 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
           onClick={handleFollowUsClick}
           className="px-3 py-1.5 border rounded-lg text-sm font-medium arabic-text transition-colors duration-200"
           style={{
-            borderColor: whiteLabelConfig?.primaryColor || '#50BF63',
-            color: whiteLabelConfig?.primaryColor || '#50BF63',
+            borderColor: whiteLabelConfig?.primaryColor,
+            color: whiteLabelConfig?.primaryColor,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor =
-              whiteLabelConfig?.primaryColor || '#50BF63';
-            e.currentTarget.style.color = '#FFFFFF';
+            if (whiteLabelConfig?.primaryColor) {
+              e.currentTarget.style.backgroundColor = whiteLabelConfig.primaryColor;
+            }
+            if (whiteLabelConfig?.textColor) {
+              e.currentTarget.style.color = whiteLabelConfig.textColor;
+            }
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'transparent';
-            e.currentTarget.style.color =
-              whiteLabelConfig?.primaryColor || '#50BF63';
+            if (whiteLabelConfig?.primaryColor) {
+              e.currentTarget.style.color = whiteLabelConfig.primaryColor;
+            }
           }}
         >
           تابعنا
@@ -67,7 +71,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
         onClick={handleProfileClick}
         className="w-10 h-10 rounded-full flex items-center justify-center relative"
         style={{
-          backgroundColor: whiteLabelConfig?.secondaryColor || '#E5E7EB', // خلفية الأيقونة
+          backgroundColor: whiteLabelConfig?.secondaryColor,
         }}
       >
         {/* Profile icon */}
@@ -75,7 +79,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
           width="20"
           height="20"
           viewBox="0 0 24 24"
-          fill={whiteLabelConfig?.textColor || '#374151'} // لون الأيقونة مربوط
+          fill={whiteLabelConfig?.textColor}
           xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" />
@@ -86,7 +90,7 @@ export const HeaderComponent: React.FC<HeaderComponentProps> = ({
         <div
           className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full"
           style={{
-            backgroundColor: whiteLabelConfig?.accentColor || '#50BF63',
+            backgroundColor: whiteLabelConfig?.accentColor,
           }}
         ></div>
       </button>

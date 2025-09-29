@@ -1,13 +1,8 @@
 @import "tailwindcss";
 @import "./assets/fonts/fonts.css";
 
-/* CSS Custom Properties for dynamic theming */
+/* CSS Custom Properties for dynamic theming - will be set by API */
 :root {
-  --primary-color: #50BF63;
-  --secondary-color: #DAA520;
-  --background-color: #F5F5DC;
-  --text-color: #FFFFFF;
-  --accent-color: #FFD700;
   --font-family: 'Alexandria', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -22,7 +17,6 @@ body,
   overflow-x: hidden;
   direction: rtl;
   text-align: right;
-  background-color: var(--background-color);
   font-family: var(--font-family);
 }
 

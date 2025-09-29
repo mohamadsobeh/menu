@@ -63,7 +63,9 @@ export const BannerComponent: React.FC<BannerComponentProps> = ({
       style={{
         background: whiteLabelConfig?.backgroundColor
           ? whiteLabelConfig.backgroundColor
-          : 'linear-gradient(to bottom, #f3f4f6 0%, rgba(243, 244, 246, 0.8) 50%, rgba(243, 244, 246, 0) 100%)'
+          : whiteLabelConfig?.secondaryColor
+            ? `linear-gradient(to bottom, ${whiteLabelConfig.secondaryColor} 0%, ${whiteLabelConfig.secondaryColor}80 50%, ${whiteLabelConfig.secondaryColor}00 100%)`
+            : undefined
       }}
     >
       <div
@@ -84,7 +86,7 @@ export const BannerComponent: React.FC<BannerComponentProps> = ({
               <div
                 className="w-88 h-40 rounded-xl shadow-md overflow-hidden"
                 style={{
-                  backgroundColor: whiteLabelConfig?.secondaryColor || '#FFFFFF'
+                  backgroundColor: whiteLabelConfig?.secondaryColor
                 }}
               >
                 <img
