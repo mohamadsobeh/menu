@@ -78,7 +78,7 @@ export const useOrders = () => {
             case 'in_progress':
                 return 'جاري العمل عليه';
             case 'completed':
-                return 'مكتملة !';
+                return 'مكتملة';
             case 'cancelled':
                 return 'ملغاة';
             default:
