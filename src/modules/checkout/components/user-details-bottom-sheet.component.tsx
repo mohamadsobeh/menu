@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useWhiteLabelColors } from '../../../providers/white-label-provider';
-
+import { X } from "lucide-react";
 interface UserDetailsBottomSheetProps {
     isOpen: boolean;
     onClose: () => void;
@@ -55,57 +55,77 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-bold arabic-text" style={{ color: textColor }}>
-                            إضافة المزيد من المعلومات
-                        </h3>
-                        <button
-                            onClick={onClose}
-                            className="p-2 rounded-full"
-                            style={{ backgroundColor: secondaryColor, color: textColor }}
-                        >
-                            <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke={textColor}
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                    
 
-                    {/* Input Fields */}
-                    <div className="space-y-4">
-                        <div>
-                            <input
-                                type="email"
-                                placeholder="البريد الإلكتروني"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg arabic-text focus:outline-none focus:ring-2 transition-colors"
-                                style={{ backgroundColor: secondaryColor, color: textColor, outlineColor: primaryColor }}
-                                disabled={isLoading}
-                            />
-                        </div>
+{/* Header */}
+{/* زر الإغلاق (X) */}
+<div className="absolute top-8 left-12">
+  <button
+    onClick={onClose}
+    className="absolute"
+  >
+    <X
+      size={24}       
+      strokeWidth={2.5}  
+      color={textColor}  
+    />
+  </button>
+</div>
 
-                        <div>
-                            <input
-                                type="text"
-                                placeholder="الاسم الكامل"
-                                value={fullName}
-                                onChange={(e) => setFullName(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg arabic-text focus:outline-none focus:ring-2 transition-colors"
-                                style={{ backgroundColor: secondaryColor, color: textColor, outlineColor: primaryColor }}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
+{/* الحقول */}
+<div className="space-y-6 w-full max-w-[376px] mx-auto mt-[72px]">
+  {/* البريد الإلكتروني */}
+  <div>
+    <input
+      type="email"
+      placeholder="البريد الإلكتروني"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="
+        w-full h-[64px] 
+        rounded-[16px] 
+        px-[18px] py-[20px] 
+        arabic-text text-right
+        text-[16px] font-medium
+        focus:outline-none focus:ring-2 transition-colors
+        placeholder:font-medium
+      "
+      style={{
+        backgroundColor: secondaryColor,
+        color: textColor,
+        outlineColor: primaryColor,
+      }}
+      disabled={isLoading}
+    />
+  </div>
+
+  {/* الاسم الكامل */}
+  <div>
+    <input
+      type="text"
+      placeholder="الاسم الكامل"
+      value={fullName}
+      onChange={(e) => setFullName(e.target.value)}
+      className="
+        w-full h-[64px] 
+        rounded-[16px] 
+        px-[18px] py-[20px] 
+        arabic-text text-right
+        text-[16px] font-medium
+        focus:outline-none focus:ring-2 transition-colors
+        placeholder:font-medium
+      "
+      style={{
+        backgroundColor: secondaryColor,
+        color: textColor,
+        outlineColor: primaryColor,
+      }}
+      disabled={isLoading}
+    />
+  </div>
+</div>
+
+
                 </div>
 
                 {/* Footer (fixed buttons at bottom) */}
@@ -114,7 +134,7 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                     <button
                         onClick={handleConfirm}
                         disabled={!email.trim() || !fullName.trim() || isLoading}
-                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50 disabled:cursor-not-allowed mb-4"
                         style={{ backgroundColor: primaryColor, color: textColor }}
                     >
                         {isLoading ? 'جاري التحميل...' : 'تأكيد'}
@@ -124,7 +144,7 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                     <button
                         onClick={handleBack}
                         disabled={isLoading}
-                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50"
+                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50 mb-10"
                         style={{ backgroundColor: secondaryColor, color: textColor }}
                     >
                         رجوع

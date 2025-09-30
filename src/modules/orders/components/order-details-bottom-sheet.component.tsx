@@ -2,6 +2,7 @@ import React from 'react';
 import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 import { useOrderDetails } from '../hooks';
 import type { OrderDetailsBottomSheetProps } from '../types';
+import { OrdersBottomSheet } from '../components/orders-bottom-sheet.component';
 
 interface OrderDetailsBottomSheetWithAssessmentProps extends OrderDetailsBottomSheetProps {
     onAssessmentClick?: (orderId: string) => void;
@@ -127,11 +128,9 @@ export const OrderDetailsBottomSheet: React.FC<OrderDetailsBottomSheetWithAssess
                         </div>
                     </>
                 ) : (
-                    <div className="flex-1 flex items-center justify-center p-4">
-                        <div className="arabic-text" style={{ color: accentColor }}>
-                            لم يتم العثور على تفاصيل الطلب.
-                        </div>
-                    </div>
+                    <div className="flex-1">
+                    <OrdersBottomSheet isOpen={isOpen} onClose={onClose} />
+                  </div>
                 )}
             </div>
         </div>
