@@ -20,7 +20,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   onOrderPlaced,
 }) => {
-  const { backgroundColor, textColor, primaryColor, secondaryColor, accentColor } = useWhiteLabelColors();
+  const { backgroundColor, textColor, primaryColor, secondaryColor } = useWhiteLabelColors();
   const {
     checkoutState,
     formData,
