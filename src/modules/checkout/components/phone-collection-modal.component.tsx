@@ -59,6 +59,7 @@ export const PhoneCollectionModal: React.FC<PhoneCollectionModalProps> = ({
   };
 
   const handleUserDetailsConfirm = (data: { email: string; fullName: string }) => {
+    console.log('User details confirmed:', data);
     setShowUserDetails(false);
     onPhoneSubmitted({
       phoneNumber: phoneNumber.trim(),
