@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 import type { TableOption } from '../types';
 
 interface TableSelectorProps {
@@ -14,6 +15,7 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { backgroundColor, primaryColor, secondaryColor, textColor, accentColor } = useWhiteLabelColors();
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -40,20 +42,21 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
     return (
         <div className="relative" ref={dropdownRef}>
             <div
-                className="flex justify-between items-center bg-white border border-gray-200 rounded-lg p-3 cursor-pointer"
+                className="flex justify-between items-center rounded-lg p-3 cursor-pointer"
+                style={{ backgroundColor: backgroundColor, border: `1px solid ${secondaryColor}` }}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <span className="text-sm font-medium text-gray-700 arabic-text">
+                <span className="text-sm font-medium arabic-text" style={{ color: textColor }}>
                     رقم الطاولة
                 </span>
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 arabic-text">
+                    <span className="text-sm arabic-text" style={{ color: secondaryColor }}>
                         {selectedTable ? `الطاولة رقم ${selectedTable.number}` : "اختر"}
                     </span>
                     <svg
-                        className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                        className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                         fill="none"
-                        stroke="currentColor"
+                        stroke={textColor}
                         viewBox="0 0 24 24"
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -62,36 +65,35 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
             </div>
 
             {isOpen && (
-                <div className="absolute top-full right-0 left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl z-20 overflow-hidden">
+                <div className="absolute top-full right-0 left-0 mt-1 rounded-lg shadow-xl z-20 overflow-hidden" style={{ backgroundColor: backgroundColor, border: `1px solid ${secondaryColor}` }}>
                     {tableOptions.map((table) => (
                         <div
                             key={table.id}
-                            className={`flex items-center gap-3 p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 ${!table.isAvailable ? 'opacity-50 cursor-not-allowed' : ''
+                            className={`flex items-center gap-3 p-4 cursor-pointer last:border-b-0 ${!table.isAvailable ? 'opacity-50 cursor-not-allowed' : ''
                                 }`}
+                            style={{ borderBottom: `1px solid ${secondaryColor}` }}
                             onClick={() => table.isAvailable && handleTableSelect(table)}
                         >
                             <div className="relative">
-                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedTable?.id === table.id
-                                        ? 'border-[#50BF63] bg-[#50BF63]'
-                                        : 'border-gray-300'
-                                    }`}>
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center`}
+                                    style={{ borderColor: selectedTable?.id === table.id ? primaryColor : secondaryColor, backgroundColor: selectedTable?.id === table.id ? primaryColor : backgroundColor }}>
                                     {selectedTable?.id === table.id && (
-                                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: textColor }}></div>
                                     )}
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <span className="text-sm font-medium text-gray-800 arabic-text">
+                                <span className="text-sm font-medium arabic-text" style={{ color: textColor }}>
                                     الطاولة رقم {table.number}
                                 </span>
                                 {table.capacity && (
-                                    <span className="text-xs text-gray-500 arabic-text block">
+                                    <span className="text-xs arabic-text block" style={{ color: secondaryColor }}>
                                         {table.capacity} أشخاص
                                     </span>
                                 )}
                             </div>
                             {!table.isAvailable && (
-                                <span className="text-xs text-red-500 arabic-text">
+                                <span className="text-xs arabic-text" style={{ color: accentColor }}>
                                     غير متاحة
                                 </span>
                             )}

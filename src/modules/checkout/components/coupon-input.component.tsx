@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 import type { Coupon } from '../types';
 
 interface CouponInputProps {
@@ -21,6 +22,7 @@ export const CouponInput: React.FC<CouponInputProps> = ({
     error,
 }) => {
     const [localError, setLocalError] = useState<string>('');
+    const { backgroundColor, primaryColor, secondaryColor, textColor, accentColor } = useWhiteLabelColors();
 
     const handleApply = async () => {
         if (!value.trim()) return;
@@ -41,7 +43,7 @@ export const CouponInput: React.FC<CouponInputProps> = ({
     const displayError = error || localError;
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-3">
+        <div className="rounded-lg p-3" style={{ backgroundColor: backgroundColor, border: `1px solid ${secondaryColor}` }}>
             <div className="flex items-center gap-2">
                 <input
                     type="text"
@@ -49,16 +51,18 @@ export const CouponInput: React.FC<CouponInputProps> = ({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     className="flex-1 text-sm arabic-text outline-none"
+                    style={{ color: textColor, backgroundColor: backgroundColor }}
                     disabled={isLoading || !!appliedCoupon}
                 />
 
                 {appliedCoupon ? (
                     <button
                         onClick={handleRemove}
-                        className="text-red-500 hover:text-red-700 p-1"
+                        className="p-1"
+                        style={{ color: accentColor }}
                         disabled={isLoading}
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="none" stroke={textColor} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -66,7 +70,8 @@ export const CouponInput: React.FC<CouponInputProps> = ({
                     <button
                         onClick={handleApply}
                         disabled={isLoading || !value.trim()}
-                        className="bg-[#50BF63] text-white px-3 py-1 rounded text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-3 py-1 rounded text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ backgroundColor: primaryColor, color: textColor }}
                     >
                         {isLoading ? '...' : 'تطبيق'}
                     </button>
@@ -74,9 +79,9 @@ export const CouponInput: React.FC<CouponInputProps> = ({
             </div>
 
             {appliedCoupon && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-sm">
-                    <div className="flex items-center gap-2 text-green-700">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mt-2 p-2 rounded text-sm" style={{ backgroundColor: secondaryColor, border: `1px solid ${secondaryColor}` }}>
+                    <div className="flex items-center gap-2" style={{ color: textColor }}>
+                        <svg className="w-4 h-4" fill="none" stroke={textColor} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <span className="arabic-text">
@@ -87,9 +92,9 @@ export const CouponInput: React.FC<CouponInputProps> = ({
             )}
 
             {displayError && (
-                <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-sm">
-                    <div className="flex items-center gap-2 text-red-700">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mt-2 p-2 rounded text-sm" style={{ backgroundColor: backgroundColor, border: `1px solid ${accentColor}` }}>
+                    <div className="flex items-center gap-2" style={{ color: accentColor }}>
+                        <svg className="w-4 h-4" fill="none" stroke={accentColor} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span className="arabic-text">{displayError}</span>

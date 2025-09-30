@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 
 interface UserDetailsBottomSheetProps {
     isOpen: boolean;
@@ -16,6 +17,7 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { backgroundColor, primaryColor, secondaryColor, textColor } = useWhiteLabelColors();
 
     const handleConfirm = async () => {
         if (!email.trim() || !fullName.trim()) {
@@ -41,30 +43,31 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-white">
+        <div className="fixed inset-0 z-50" style={{ backgroundColor: backgroundColor }}>
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black bg-opacity-40"
+                className="absolute inset-0"
                 onClick={onClose}
             />
 
             {/* Bottom Sheet */}
-            <div className="relative w-full h-[100vh] bg-white rounded-t-2xl shadow-2xl flex flex-col">
+            <div className="relative w-full h-[100vh] rounded-t-2xl shadow-2xl flex flex-col" style={{ backgroundColor: backgroundColor }}>
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-bold text-gray-800 arabic-text">
+                        <h3 className="text-lg font-bold arabic-text" style={{ color: textColor }}>
                             إضافة المزيد من المعلومات
                         </h3>
                         <button
                             onClick={onClose}
-                            className="p-2 hover:bg-gray-100 rounded-full"
+                            className="p-2 rounded-full"
+                            style={{ backgroundColor: secondaryColor, color: textColor }}
                         >
                             <svg
-                                className="w-5 h-5 text-gray-500"
+                                className="w-5 h-5"
                                 fill="none"
-                                stroke="currentColor"
+                                stroke={textColor}
                                 viewBox="0 0 24 24"
                             >
                                 <path
@@ -85,7 +88,8 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                                 placeholder="البريد الإلكتروني"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 bg-[#F4F6F8] rounded-lg text-[#8B8DA0] arabic-text focus:outline-none focus:ring-2 focus:ring-[#50BF63] focus:bg-white transition-colors"
+                                className="w-full px-4 py-3 rounded-lg arabic-text focus:outline-none focus:ring-2 transition-colors"
+                                style={{ backgroundColor: secondaryColor, color: textColor, outlineColor: primaryColor }}
                                 disabled={isLoading}
                             />
                         </div>
@@ -96,7 +100,8 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                                 placeholder="الاسم الكامل"
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
-                                className="w-full px-4 py-3 bg-[#F4F6F8] rounded-lg text-[#8B8DA0] arabic-text focus:outline-none focus:ring-2 focus:ring-[#50BF63] focus:bg-white transition-colors"
+                                className="w-full px-4 py-3 rounded-lg arabic-text focus:outline-none focus:ring-2 transition-colors"
+                                style={{ backgroundColor: secondaryColor, color: textColor, outlineColor: primaryColor }}
                                 disabled={isLoading}
                             />
                         </div>
@@ -104,12 +109,13 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                 </div>
 
                 {/* Footer (fixed buttons at bottom) */}
-                <div className="p-6  border-[#EBEBEB] space-y-3">
+                <div className="p-6  space-y-3" style={{ borderColor: secondaryColor }}>
                     {/* Confirm Button */}
                     <button
                         onClick={handleConfirm}
                         disabled={!email.trim() || !fullName.trim() || isLoading}
-                        className="w-full flex items-center justify-center bg-[#50BF63] text-white py-3 rounded-xl font-semibold arabic-text disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ backgroundColor: primaryColor, color: textColor }}
                     >
                         {isLoading ? 'جاري التحميل...' : 'تأكيد'}
                     </button>
@@ -118,7 +124,8 @@ export const UserDetailsBottomSheet: React.FC<UserDetailsBottomSheetProps> = ({
                     <button
                         onClick={handleBack}
                         disabled={isLoading}
-                        className="w-full flex items-center justify-center bg-[#DFE1E6] text-[#787B8A] py-3 rounded-xl font-semibold arabic-text disabled:opacity-50"
+                        className="w-full flex items-center justify-center py-3 rounded-xl font-semibold arabic-text disabled:opacity-50"
+                        style={{ backgroundColor: secondaryColor, color: textColor }}
                     >
                         رجوع
                     </button>

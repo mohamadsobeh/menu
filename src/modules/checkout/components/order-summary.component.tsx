@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWhiteLabelColors } from '../../../providers/white-label-provider';
 import { formatSYPPrice } from '../../../shared/utils';
 import type { OrderSummary } from '../types';
 
@@ -7,13 +8,15 @@ interface OrderSummaryComponentProps {
 }
 
 export const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({ orderSummary }) => {
+  const { backgroundColor, textColor, secondaryColor, primaryColor } = useWhiteLabelColors();
   return (
-    <div className="bg-gray-50 p-4 space-y-2">
+    <div className="p-4 space-y-2" style={{ backgroundColor: backgroundColor }}>
       {/* Individual Items Breakdown */}
       {orderSummary.items.map((item, index) => (
         <div
           key={`breakdown-${item.id}-${index}`}
-          className="flex justify-between text-sm text-gray-700 arabic-text"
+          className="flex justify-between text-sm arabic-text"
+          style={{ color: textColor }}
         >
           <span>{item.name}</span>
           <span>{formatSYPPrice(item.price_in_syp * item.quantity)}</span>
@@ -21,22 +24,22 @@ export const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({ or
       ))}
 
       {/* Subtotal */}
-      <div className="flex justify-between items-center border-t border-gray-200 pt-2">
-        <span className="text-base font-semibold arabic-text">
+      <div className="flex justify-between items-center border-t pt-2" style={{ borderColor: secondaryColor }}>
+        <span className="text-base font-semibold arabic-text" style={{ color: textColor }}>
           المجموع الفرعي
         </span>
-        <span className="text-base arabic-text">
+        <span className="text-base arabic-text" style={{ color: textColor }}>
           {formatSYPPrice(orderSummary.subtotal)}
         </span>
       </div>
 
       {/* Discount */}
       {orderSummary.discount > 0 && (
-        <div className="flex justify-between items-center text-green-600">
-          <span className="text-sm font-medium arabic-text">
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium arabic-text" style={{ color: primaryColor }}>
             الخصم
           </span>
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium" style={{ color: primaryColor }}>
             -{formatSYPPrice(orderSummary.discount)}
           </span>
         </div>
@@ -44,8 +47,8 @@ export const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({ or
 
       {/* Total */}
       <div className="flex justify-between items-center">
-        <span className="text-lg font-bold arabic-text">المجموع الكلي</span>
-        <span className="text-lg font-bold arabic-text text-[#50BF63]">
+        <span className="text-lg font-bold arabic-text" style={{ color: textColor }}>المجموع الكلي</span>
+        <span className="text-lg font-bold arabic-text" style={{ color: primaryColor }}>
           {formatSYPPrice(orderSummary.total)}
         </span>
       </div>

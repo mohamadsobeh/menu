@@ -20,7 +20,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   onOrderPlaced,
 }) => {
-  const { backgroundColor } = useWhiteLabelColors();
+  const { backgroundColor, textColor, primaryColor, secondaryColor, accentColor } = useWhiteLabelColors();
   const {
     checkoutState,
     formData,
@@ -107,7 +107,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black bg-opacity-40"
+        className="absolute inset-0"
+        style={{ backgroundColor: textColor ? undefined : undefined, background: undefined }}
         onClick={handleClose}
       />
 
@@ -119,14 +120,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between p-4 border-b border-gray-200"
-          style={{ backgroundColor: backgroundColor }}
+          className="flex items-center justify-between p-4 border-b"
+          style={{ backgroundColor: backgroundColor, borderColor: secondaryColor }}
         >
           <button onClick={handleClose} className="p-2">
             <svg
               className="w-6 h-6"
               fill="none"
-              stroke="currentColor"
+              stroke={textColor}
               viewBox="0 0 24 24"
             >
               <path
@@ -137,17 +138,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               />
             </svg>
           </button>
-          <h1 className="text-lg font-bold text-gray-800 arabic-text">
+          <h1 className="text-lg font-bold arabic-text" style={{ color: textColor }}>
             تشيك اوت
           </h1>
           <button
             onClick={resetCheckout}
-            className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center"
+            className="w-9 h-9 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: secondaryColor, color: textColor }}
           >
             <svg
-              className="w-5 h-5 text-gray-600"
+              className="w-5 h-5"
               fill="none"
-              stroke="currentColor"
+              stroke={textColor}
               viewBox="0 0 24 24"
             >
               <path
@@ -168,7 +170,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           {checkoutState.orderSummary.items.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="flex items-center gap-4 p-4 border-b border-gray-100"
+              className="flex items-center gap-4 p-4 border-b"
+              style={{ borderColor: secondaryColor }}
             >
               {/* Product Image */}
               <img
@@ -179,32 +182,34 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
               {/* Product Details */}
               <div className="flex-1">
-                <h3 className="font-bold text-gray-800 arabic-text text-sm mb-1">
+                <h3 className="font-bold arabic-text text-sm mb-1" style={{ color: textColor }}>
                   {item.name}
                 </h3>
-                <p className="text-xs text-gray-500 arabic-text mb-1">
+                <p className="text-xs arabic-text mb-1" style={{ color: secondaryColor }}>
                   {item.selectedAdditions?.map((add) => add.name).join(", ") ||
                     "وصف قصير للمنتج"}
                 </p>
-                <p className="text-sm font-bold text-gray-800 arabic-text">
+                <p className="text-sm font-bold arabic-text" style={{ color: textColor }}>
                   {formatSYPPrice(item.price_in_syp * item.quantity)}
                 </p>
               </div>
 
               {/* Quantity Counter */}
-              <div className="flex items-center bg-gray-50 border border-gray-200 rounded-full px-2 py-1">
+              <div className="flex items-center rounded-full px-2 py-1" style={{ backgroundColor: backgroundColor, border: `1px solid ${secondaryColor}` }}>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full"
+                  className="w-7 h-7 flex items-center justify-center rounded-full"
+                  style={{ color: textColor, backgroundColor: undefined }}
                 >
                   −
                 </button>
-                <span className="text-sm font-semibold text-gray-800 mx-2">
+                <span className="text-sm font-semibold mx-2" style={{ color: textColor }}>
                   {item.quantity}
                 </span>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full"
+                  className="w-7 h-7 flex items-center justify-center rounded-full"
+                  style={{ color: textColor, backgroundColor: undefined }}
                 >
                   +
                 </button>
@@ -213,13 +218,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           ))}
 
           {/* Add More */}
-          <div className="flex items-center justify-center p-4 border-t border-b border-gray-200 text-[#50BF63] cursor-pointer">
+          <div className="flex items-center justify-center p-4 border-t border-b cursor-pointer"
+            style={{ borderColor: secondaryColor, color: primaryColor }}>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-[#50BF63] rounded-full flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
                 <svg
-                  className="w-4 h-4 text-white"
+                  className="w-4 h-4"
                   fill="none"
-                  stroke="currentColor"
+                  stroke={textColor}
                   viewBox="0 0 24 24"
                 >
                   <path
@@ -236,7 +242,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         </div>
 
         {/* Table & Coupon Section */}
-        <div className="bg-gray-50 p-4 space-y-3">
+        <div className="p-4 space-y-3" style={{ backgroundColor: backgroundColor }}>
           <TableSelector
             tableOptions={tableOptions}
             selectedTable={checkoutState.selectedTable}
